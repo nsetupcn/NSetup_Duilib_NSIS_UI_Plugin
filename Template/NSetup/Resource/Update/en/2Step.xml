@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Part>
+    <VerticalLayout name="2step">
+        <Label text="Available updates detected" textcolor="#FFFFFFFF" padding="16,0,0,0" font="3"/>
+        <Label name="newVersionTextStep2" text="Available version:" textcolor="#FFFFFFFF" padding="16,0,0,0" font="2"/>
+        <RichEdit name="updateInfo" inset="0,0,0,0" text="Getting, please wait" height="210" hinttext="普通" vscrollbar="true" textcolor="#FFFFFFFF" padding="16,0,0,8" readonly="true" menu="true" wordbreak="true"/>
+    </VerticalLayout>
+</Part>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Part>
+    <VerticalLayout name="1step">
+        <Control height="170"/>
+        <Label text="正在检测升级信息..." align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="3"/>
+        <Label name="currentVersionTextStep1" text="当前版本：" textcolor="#FFFFFFFF" align="center" padding="0,0,0,0" font="2"/>
+        <Control />
+    </VerticalLayout>
+</Part>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Part>
+    <HorizontalLayout padding="0,10,10,0" height="32">
+        <Control />
+        <Button name="CancelNetErrorBtn" text="以后再说" textcolor="#FF423E31" width="110" padding="16,0,0,0" normalimage="msg_cancel_normal.png" hotimage="msg_cancel_hover.png" pushedimage="msg_cancel_pressed.png" font="1"/> 
+        <Button name="OkNetErrorBtn" text="重试" textcolor="#FF423E31" normalimage="res='btn_green_nor.png' corner='4,4,4,4'" hotimage="res='btn_green_hover.png' corner='4,4,4,4'" pushedimage="res='btn_green_pressed.png' corner='4,4,4,4'" disabledimage="res='btn_white_disabled.png' corner='4,4,4,4'" width="110" padding="27,0,0,0" font="1"/>
+    </HorizontalLayout>
+</Part>

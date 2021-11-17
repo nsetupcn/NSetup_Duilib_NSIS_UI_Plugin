@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Part>
+    <VerticalLayout name="9step">
+        <Control height="180"/>
+        <Label text="Error in the upgrade process" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="3"/>
+        <Label text="Please re-check the upgrade later" textcolor="#FFFFFFFF" align="center" padding="0,0,0,0" font="2"/>
+        <Control />
+    </VerticalLayout>
+</Part>

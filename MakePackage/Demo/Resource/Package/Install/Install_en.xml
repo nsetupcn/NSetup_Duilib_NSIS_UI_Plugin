@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Window size="600,400" sizebox="0,0,0,0" caption="0,0,0,180" showshadow="true" shadowimage="shadow.png" shadowcorner="7,7,7,7" bktrans="true">
+    <Font id="0" name="微软雅黑" size="12" bold="false" italic="false" default="true"/>
+    <Font id="1" name="微软雅黑" size="14" bold="false" italic="false" />
+    <Font id="2" name="微软雅黑" size="16" bold="false" italic="false" />
+    <Font id="3" name="微软雅黑" size="20" bold="false" italic="false" />
+    <Font id="4" name="微软雅黑" size="12" bold="false" italic="false" />
+    <Font id="5" name="微软雅黑" size="14" bold="true" italic="false" />
+	<Default name="CheckBox" value="textcolor=&quot;#FF9ca1a4&quot; disabledtextcolor=&quot;#FF888888&quot; width=&quot;100&quot; height=&quot;13&quot; textpadding=&quot;20,1,0,0&quot; align=&quot;left&quot; normalimage=&quot;file='checkbox_unchecked_normal.png' dest='0,0,13,13'&quot; hotimage=&quot;file='checkbox_unchecked_hover.png' dest='0,0,13,13'&quot; pushedimage=&quot;file='checkbox_unchecked_pressed.png' dest='0,0,13,13'&quot; disabledimage=&quot;file='check_disable.png' dest='0,0,13,13'&quot; selectedimage=&quot;file='checkbox_checked_normal.png' dest='0,0,13,13'&quot; selectedhotimage=&quot;file='checkbox_checked_hover.png' dest='0,0,13,13'&quot; selectedpushedimage=&quot;file='checkbox_checked_pressed.png' dest='0,0,13,13'&quot; autocalcwidth=&quot;true&quot;"/>
+    <VerticalAnimLayout name="bkAnimLayout" bkcolor="#FFFFFFFF">
+        <VerticalLayout name="installTopBg" height="250" bkimage="en/installTopBg.png">
+            <HorizontalLayout height="17" padding="0,9,11,0">
+                <Control />
+                <Button name="InstallTab_sysMinBtn" width="17" height="17" normalimage="system_min_normal.png" hotimage="system_min_hover.png" pushedimage="system_min_pressed.png" /> 
+                <Button name="InstallTab_sysCloseBtn" width="17" height="17" normalimage="system_colse_normal.png" hotimage="system_colse_hover.png" pushedimage="system_colse_pressed.png" padding="12,0,0,0"/> 
+            </HorizontalLayout>
+        </VerticalLayout>
+        <TabLayout name="WizardTab" padding="15,0,15,15">
+            <VerticalLayout>
+                <VerticalLayout>
+                    <Control />
+                    <HorizontalLayout>
+                        <Control />
+                        <Button name="fastInstallBtn" text="Install now" textcolor="#FFFFFFFF" disabledtextcolor="#FFbbbbbb" width="176" height="46" normalimage="fast_Install_normal.png" hotimage="fast_Install_hover.png" pushedimage="fast_Install_pressed.png" disabledimage="fast_Install_disable.png" font="3" /> 
+                        <Control />
+                    </HorizontalLayout>
+                    <Control />
+                </VerticalLayout>
+                <HorizontalLayout height="13">
+                    <CheckBox name="acceptCheckBox" text="Read and agree" textcolor="#FF333333" padding="0,0,5,0" selected="true"/>
+                    <Button name="acceptBtn" text="Agreement" textcolor="#FF2E95F5" width="100" height="13" align="left" cursor="hand"/> 
+                    <Control />
+                    <Button name="customInstallBtn" text="Customized" textcolor="#FF2a7de4" textpadding="0,0,20,0" disabledtextcolor="#FFA7A6AA" width="110" normalimage="icon_custom_expand_normal.png" hotimage="icon_custom_expand_hover.png" pushedimage="icon_custom_expand_pressed.png" disabledimage="fast_Install_disable.png" font="0" align="right" cursor="hand"/> 
+                </HorizontalLayout>
+            </VerticalLayout> 
+            <VerticalLayout padding="10,15,10,0">
+                <Label name="progressDetail" text="Installation：" width="400" height="22" textcolor="#FF000000" Font="1"/>
+                <HorizontalLayout height="30" padding="0,8,0,0">
+                    <Edit name="InstallTab_InstallFilePath" hinttext="普通" bordersize="0" textcolor="#FF000000" normalimage="file='edit.png' corner='4,4,4,4'" hotimage="file='edit.png' corner='4,4,4,4'" focusedimage="file='edit.png' corner='4,4,4,4'" menu="true"/>
+                    <Button name="InstallTab_SelectFilePathBtn" text="Browse" textcolor="#FF656565" width="80" normalimage="change_folder_normal.png" hotimage="change_folder_hover.png" pushedimage="change_folder_pressed.png"  padding="0,0,0,0" Font="1"/> 
+                </HorizontalLayout>
+                <HorizontalLayout height="13" padding="0,10,0,0">
+                    <CheckBox name="deskShortCheckBox" text="Add desktop shortcut" textcolor="#FF333333" width="250" selected="true"/>
+                    <CheckBox name="autoRunCheckBox" text="Auto start" textcolor="#FF333333" width="250" padding="5,0,0,0" selected="true"/>
+					<Label font="0" textcolor="#FF999999" width="90" text="Required：30M" padding="20,0,0,0"/>
+					<Label font="0" width="70" text="Remaining:" textcolor="#FF999999" padding="20,0,0,0"/>
+					<Label font="0" name="InstallTab_FreeSpace" width="150" textcolor="#FF999999" />
+                </HorizontalLayout>
+                <Control />
+                <HorizontalLayout height="30" >
+                    <Control />
+                    <Button name="Select_Install_Btn" text="Install now" textcolor="#FFFFFFFF" width="100" normalimage="Select_Install_normal.png" hotimage="Select_Install_hover.png" pushedimage="Select_Install_pressed.png"  padding="0,0,15,0" Font="1"/> 
+                    <Button name="Select_InstallCancel_Btn" text="Return" textcolor="#FF656565" width="66" normalimage="Select_InstallCancel_normal.png" hotimage="Select_InstallCancel_hover.png" pushedimage="Select_InstallCancel_pressed.png"  padding="0,0,0,0" Font="1"/> 
+                </HorizontalLayout>
+            </VerticalLayout>
+            <VerticalLayout padding="10,0,10,0">
+                <Control />
+                <HorizontalLayout>
+                    <Label name="progressDetail" text="Installing" textcolor="#FF000000" Font="1" autocalcwidth="true"/>
+                    <Label name="progressText" text="0%" textcolor="#FF000000" textpadding="5,0,0,0" Font="1"/>
+                    <Control />
+                </HorizontalLayout>
+                <Progress name="InstallProgressBar" height="14" bkimage="file='progress_gray.png' corner='3,0,7,0'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" foreimage="file='progress_green.png' corner='3,0,70,0'" min="0" max="100" value="0" hor="true" />
+                <Control />
+            </VerticalLayout>
+            <VerticalLayout>
+                <Control />
+                <HorizontalLayout>
+                    <Control />
+                    <Button name="Install_run_Btn" text="Start" textcolor="#FFFFFFFF" disabledtextcolor="#FFA7A6AA" width="176" height="46" normalimage="fast_Install_normal.png" hotimage="fast_Install_hover.png" pushedimage="fast_Install_pressed.png" disabledimage="fast_Install_disable.png" font="3" />  
+                    <Control />
+                </HorizontalLayout>
+                <Control />
+            </VerticalLayout>
+        </TabLayout>
+    </VerticalAnimLayout>
+</Window>

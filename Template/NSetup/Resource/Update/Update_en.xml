@@ -1,0 +1,36 @@
+<Window size="500,350" sizebox="0,0,0,0" caption="0,0,0,32" showshadow="true" shadowimage="shadow.png" shadowcorner="7,7,7,7">
+    <Include source="default.xml" />
+    <VerticalLayout name="windowsBk">
+        <HorizontalLayout height="30" bkimage="res='tittle.png' corner='3,3,3,3'">
+            <Label text="Check for updates" textcolor="#FFFFFFFF" padding="220,0,0,0" font="1"/>
+            <HorizontalLayout name="sysBtnH" float="true" pos="440,0,0,0" height="30" width="60">
+                <Button name="minbtn" textcolor="#00000000" normalimage="res='icon_min_nor.png' corner='4,4,4,4'" hotimage="res='icon_min_hover.png' corner='4,4,4,4'" pushedimage="res='icon_min_pressed.png' corner='4,4,4,4'" width="30" height="30"/>
+                <Button name="closebtn" textcolor="#00000000" normalimage="res='btn_closed_normal.png' corner='4,4,4,4'" hotimage="res='btn_closed_hover.png' corner='4,4,4,4'" pushedimage="res='btn_closed_pressed.png' corner='4,4,4,4'" disabledimage="res='btn_closed_disabled.png' corner='4,4,4,4'" padding="0,0,0,0" width="30" height="30"/>
+            </HorizontalLayout>
+        </HorizontalLayout>
+        <TabLayout name="WizardTab" height="270" bkimage="res='BG_inspect.png' corner='30,30,30,30'">
+            <Include source="en/1Step.xml" />
+            <Include source="en/2Step.xml" />
+            <Include source="en/3Step.xml" />
+            <Include source="en/4Step.xml" />
+            <Include source="en/5Step.xml" />
+            <Include source="en/6Step.xml" />
+            <Include source="en/7Step.xml" />
+            <Include source="en/8Step.xml" />
+            <Include source="en/9Step.xml" />
+			<Include source="en/10Step.xml" />
+        </TabLayout>
+        <TabLayout name="BottomWizardTab" bkcolor="#FFC1DDFF">
+            <Include source="en/1StepBottom.xml" />
+            <Include source="en/2StepBottom.xml" />
+            <Include source="en/3StepBottom.xml" />
+            <Include source="en/4StepBottom.xml" />
+            <Include source="en/5StepBottom.xml" />
+            <Include source="en/6StepBottom.xml" />
+            <Include source="en/7StepBottom.xml" />
+            <Include source="en/8StepBottom.xml" />
+            <Include source="en/9StepBottom.xml" />
+			<Include source="en/10StepBottom.xml" />
+        </TabLayout>
+    </VerticalLayout>
+</Window>

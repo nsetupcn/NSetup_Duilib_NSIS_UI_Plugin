@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Part>
+    <VerticalLayout name="3step" padding="16,0,40,0">
+        <Label text="正在为您更新" textcolor="#FFFFFFFF" padding="0,0,0,0" font="3"/>
+        <Label name="newVersionTextStep3" text="可用版本：" textcolor="#FFFFFFFF" padding="0,0,0,0" font="2"/>
+        <Label name="progressText" text="0%" padding="0,20,0,0" textcolor="#FFFFFFFF" font="2"/>
+        <Progress name="InstallProgressBar" height="4" bkimage="file='updata_loading_bg.png' corner='3,0,7,0'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" foreimage="file='updata_loading.png' corner='3,0,70,0'" min="0" max="100" value="0" hor="true" />
+        <Label name="progressTip" text="验证文件信息" textcolor="#FFFFFFFF"/>
+        <Control />
+    </VerticalLayout>
+</Part>

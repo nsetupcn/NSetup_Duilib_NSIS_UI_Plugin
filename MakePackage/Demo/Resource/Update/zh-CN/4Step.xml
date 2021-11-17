@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Part>
+    <VerticalLayout name="4step">
+        <Control height="180"/>
+        <Label text="程序更新已下载" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="3"/>
+        <Label text="程序正在运行，是否立即关闭，进行替换升级" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="2"/>
+        <Control />
+    </VerticalLayout>
+</Part>

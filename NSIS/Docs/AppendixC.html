@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+
+<head>
+<title>Useful Scripts</title>
+<meta name="generator" content="Halibut v1.0 (NSIS Custom Build, SVN:r6192) xhtml-backend" />
+<link rel="stylesheet" href="style.css" type='text/css' />
+</head>
+
+<body>
+<p><a href='AppendixB.html'>Previous</a> | <a href='Contents.html'>Contents</a> | <a href='AppendixD.html'>Next</a></p>
+<ul>
+<li><a class="btitle" href="AppendixC.html#usefulfunctions"><b>Appendix C: </b>Useful Scripts</a></li>
+<ul>
+<li><a href="AppendixC.html#getieversion">Get Internet Explorer version</a></li>
+<li><a href="AppendixC.html#detect.netframework">Is .NET Framework installed?</a></li>
+<li><a href="AppendixC.html#isflashinstalled">Is Macromedia Flash Player installed?</a></li>
+<li><a href="AppendixC.html#connectinternet">Connect to the Internet</a></li>
+<li><a href="AppendixC.html#multipleinstances">Prevent Multiple Instances</a></li>
+<li><a href="AppendixC.html#morefuncs">More</a></li>
+</ul>
+</ul>
+<a name="usefulfunctions"></a><h1>Appendix C: Useful Scripts</h1>
+<a name="getieversion"></a><h2>C.1 Get Internet Explorer version</h2>
+<pre>; GetIEVersion
+;
+; Returns 1-11 (IE Version) or '' (IE is not installed) on top of the stack
+;
+; Usage:
+;   Call GetIEVersion
+;   Pop $R0 ; $R0 is &quot;5&quot; etc.
+
+Function GetIEVersion
+  Push $R0
+  ReadRegStr $R0 HKLM &quot;Software\Microsoft\Internet Explorer&quot; &quot;svcVersion&quot; ; IE v10+
+  StrCpy $R0 $R0 2
+  IntCmp $R0 9 &quot;&quot; &quot;&quot; lbl_done
+  ClearErrors
+  ReadRegStr $R0 HKLM &quot;Software\Microsoft\Internet Explorer&quot; &quot;Version&quot; ; IE v4..9
+  IfErrors lbl_123
+    StrCpy $R0 $R0 1 ; Note: This truncates 5.50 to 5 etc.
+    Goto lbl_done
+  lbl_123:
+  !if &quot;${NSIS_PTR_SIZE}&quot; &gt; 4
+  StrCpy $R0 &quot;&quot;
+  !else
+  ReadRegStr $R0 HKLM &quot;Software\Microsoft\Internet Explorer&quot; &quot;IVer&quot; ; IE v1..3
+  IntCmp $R0 99 &quot;&quot; &quot;&quot; +3
+    StrCpy $R0 &quot;&quot;
+    Goto lbl_done
+  IntOp $R0 $R0 &amp; 3 ; 100..103-&gt;0..3
+  IntCmp $R0 2 +2 &quot;&quot; +2
+    IntOp $R0 $R0 + 1 ; Bump 100-&gt;v1 and 101-&gt;v2 (Is 101 v1.5 or 2.0?)
+  !endif
+  lbl_done:
+  Exch $R0
+FunctionEnd
+</pre>
+<a name="detect.netframework"></a><h2>C.2 Is .NET Framework installed?</h2>
+<pre>; IsDotNETInstalled
+;
+; NOTE: This is only able to detect .NET v1.x and v2.x!
+;
+; Based on GetDotNETVersion
+;   https://nsis.sourceforge.io/Get_.NET_Version
+;
+; Usage:
+;   Call IsDotNETInstalled
+;   Pop $0 ; 0 or 1
+;   StrCmp $0 1 found_dotNETFramework_v1_or_v2 no_dotNETFramework
+
+Function IsDotNETInstalled
+  Push $0
+  System::Call '&quot;$SysDir\MSCOREE.dll&quot;::GetCORVersion(w,i${NSIS_MAX_STRLEN},*i)i.r0?u'
+  IntOp $0 $0 ! ; HRESULT (S_OK) -&gt; BOOL
+  Exch $0
+FunctionEnd
+</pre>
+<a name="isflashinstalled"></a><h2>C.3 Is Macromedia Flash Player installed?</h2>
+<pre>; IsFlashInstalled
+;
+; Usage:
+;   Call IsFlashInstalled
+;   Pop $R0 ; 1 or &quot;&quot;
+
+Function IsFlashInstalled
+Push $R0
+ReadRegStr $R0 HKCR &quot;CLSID\{D27CDB6E-AE6D-11cf-96B8-444553540000}&quot; &quot;&quot;
+StrCmp $R0 &quot;&quot; +2
+  StrCpy $R0 &quot;1&quot;
+Exch $R0
+FunctionEnd
+</pre>
+<a name="connectinternet"></a><h2>C.4 Connect to the Internet</h2>
+<pre> ; ConnectInternet (uses Dialer plug-in) - Written by Joost Verburg 
+ ;
+ ; This function attempts to make a connection to the internet if there is no
+ ; connection available. If you are not sure that a system using the installer
+ ; has an active internet connection, call this function before downloading
+ ; files with NSISdl.
+ ; 
+ ; The function requires Internet Explorer 3, but asks to connect manually if
+ ; IE3 is not installed.
+ 
+ Function ConnectInternet
+ 
+   Push $R0
+     
+     ClearErrors
+     Dialer::AttemptConnect
+     IfErrors noie3
+     
+     Pop $R0
+     StrCmp $R0 &quot;online&quot; connected
+       MessageBox MB_OK|MB_ICONSTOP &quot;Cannot connect to the internet.&quot;
+       Quit ; This will quit the installer. You might want to add your own error handling.
+     
+     noie3:
+   
+     ; IE3 not installed
+     MessageBox MB_OK|MB_ICONINFORMATION &quot;Please connect to the internet now.&quot;
+     
+     connected:
+   
+   Pop $R0
+   
+ FunctionEnd
+</pre>
+<a name="multipleinstances"></a><h2>C.5 Prevent Multiple Instances</h2>
+
+<p>Put the following code in your <a href="Chapter4.html#oninit">.onInit function</a>:</p>
+<pre> System::Call 'kernel32::CreateMutex(p 0, i 0, t &quot;myMutex&quot;) p .r1 ?e'
+ Pop $R0
+ 
+ StrCmp $R0 0 +3
+   MessageBox MB_OK|MB_ICONEXCLAMATION &quot;The installer is already running.&quot;
+   Abort
+</pre>
+
+<p>'myMutex' <em>must</em> be replaced by a unique string or GUID!</p>
+<a name="morefuncs"></a><h2>C.6 More</h2>
+
+<p>You can find more useful scripts on <a href="https://nsis.sourceforge.io/wiki/">the NSIS Wiki</a>, <a href="http://forums.winamp.com/forumdisplay.php?s=&forumid=65">the NSIS forum</a> and the <a href="https://nsis.sourceforge.io/">NSIS development page</a>.</p>
+<p><a href='AppendixB.html'>Previous</a> | <a href='Contents.html'>Contents</a> | <a href='AppendixD.html'>Next</a></p>
+
+<hr />
+
+<address>
+</address>
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Part>
+    <VerticalLayout name="5step">
+        <Control height="180"/>
+        <Label text="Upgrade data is being replaced" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="3"/>
+        <Label text="Do not close, wait for the upgrade to complete" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="2"/>
+        <Control />
+    </VerticalLayout>
+</Part>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Part>
+    <VerticalLayout name="8step">
+        <Control height="180"/>
+        <Label text="网络连接出错" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="3"/>
+        <Label text="请重试或者稍后重新检测升级" textcolor="#FFFFFFFF" align="center" padding="0,0,0,0" font="2"/>
+        <Control />
+    </VerticalLayout>
+</Part>

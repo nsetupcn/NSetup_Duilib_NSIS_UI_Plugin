@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Window size="380,180" caption="0,0,0,50"  showshadow="true" shadowimage="shadow.png" shadowcorner="7,7,7,7" gdiplustext="true">
+    <Font id="0" name="微软雅黑" size="14" bold="false" italic="false" default="true"/>
+    <Font id="1" name="微软雅黑" size="16" bold="false" italic="false" />
+    <VerticalLayout bkcolor="#FFFFFFFF">
+        <HorizontalLayout height="34" bkcolor="#FF2A7DE7">
+            <Label name="TitleLab1" text="提示" textpadding="10,0,0,0" textcolor="#FFFFFFFF"/>
+            <Button name="CloseBtn" width="17" height="17" normalimage="system_colse_normal.png" hotimage="system_colse_hover.png" pushedimage="system_colse_pressed.png" padding="0,9,7,0"/> 
+        </HorizontalLayout>
+        <VerticalLayout padding="30,16,0,0" >
+            <HorizontalLayout height="74">
+                <Control width="44" height="44" bkimage="msgWarringTip.png"/>
+                <Label name="TextLabl" text="您确认退出安装过程？" textcolor="#FF000000" padding="14,0,14,0" endellipsis="true" wordbreak="true"/>
+            </HorizontalLayout>
+            <VerticalLayout>
+                <Control />
+                <HorizontalLayout height="26" padding="0,0,14,14">
+                    <Control />
+					<Button name="OkBtn" text="确定" textcolor="#FFFFFFFF" width="66" normalimage="msg_ok_normal.png" hotimage="msg_ok_hover.png" pushedimage="msg_ok_pressed.png" /> 
+                    <Button name="YESBtn" text="是" textcolor="#FFFFFFFF" width="66" normalimage="msg_ok_normal.png" hotimage="msg_ok_hover.png" pushedimage="msg_ok_pressed.png" /> 
+                    <Button name="NOBtn" text="否" textcolor="#FF656565" width="66" padding="16,0,0,0" normalimage="msg_cancel_normal.png" hotimage="msg_cancel_hover.png" pushedimage="msg_cancel_pressed.png" /> 
+					<Button name="AbortBtn" text="放弃" textcolor="#FF656565" width="66" padding="16,0,0,0" normalimage="msg_cancel_normal.png" hotimage="msg_cancel_hover.png" pushedimage="msg_cancel_pressed.png" />
+					<Button name="RetryBtn" text="重试" textcolor="#FF656565" width="66" padding="16,0,0,0" normalimage="msg_cancel_normal.png" hotimage="msg_cancel_hover.png" pushedimage="msg_cancel_pressed.png" />
+					<Button name="IgnoreBtn" text="忽略" textcolor="#FF656565" width="66" padding="16,0,0,0" normalimage="msg_cancel_normal.png" hotimage="msg_cancel_hover.png" pushedimage="msg_cancel_pressed.png" />
+					<Button name="cancelBtn" text="取消" textcolor="#FF656565" width="66" padding="16,0,0,0" normalimage="msg_cancel_normal.png" hotimage="msg_cancel_hover.png" pushedimage="msg_cancel_pressed.png" />
+                </HorizontalLayout>
+            </VerticalLayout>
+        </VerticalLayout>
+    </VerticalLayout>
+</Window>

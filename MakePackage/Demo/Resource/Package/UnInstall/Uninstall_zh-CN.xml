@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Window size="600,400" sizebox="0,0,0,0" caption="0,0,0,80" showshadow="true" shadowimage="shadow.png" shadowcorner="7,7,7,7">
+    <Font id="0" name="微软雅黑" size="12" bold="false" italic="false" default="true"/>
+    <Font id="1" name="微软雅黑" size="14" bold="false" italic="false" />
+    <Font id="2" name="微软雅黑" size="16" bold="false" italic="false" />
+    <Font id="3" name="微软雅黑" size="20" bold="false" italic="false" />
+    <Font id="4" name="微软雅黑" size="12" bold="false" italic="false" />
+    <Font id="5" name="微软雅黑" size="14" bold="true" italic="false" />
+    <VerticalLayout bkcolor="#FFFFFFFF">
+        <VerticalLayout name="installTopBg" height="250" bkimage="zh-CN/unInstallTopBg.png">
+            <HorizontalLayout height="17" padding="0,9,11,0">
+                <Control />
+                <Button name="InstallTab_sysMinBtn" width="17" height="17" normalimage="system_min_normal.png" hotimage="system_min_hover.png" pushedimage="system_min_pressed.png" /> 
+                <Button name="InstallTab_sysCloseBtn" width="17" height="17" normalimage="system_colse_normal.png" hotimage="system_colse_hover.png" pushedimage="system_colse_pressed.png" padding="12,0,0,0"/> 
+            </HorizontalLayout>
+        </VerticalLayout>
+        <TabLayout name="WizardTab" padding="15,0,15,15">
+            <VerticalLayout>
+                <Control />
+                <HorizontalLayout height="40">
+                    <Control />
+                    <Button name="unInstallCancelBtn" text="再给个机会" textcolor="#FFFFFFFF" disabledtextcolor="#FFA7A6AA" width="160" normalimage="uninstall_cancel_normal.png" hotimage="uninstall_cancel_hover.png" pushedimage="uninstall_cancel_pressed.png" font="3" /> 
+                    <Button name="unInstallBtn" text="狠心卸载" textcolor="#FF656565" disabledtextcolor="#FFA7A6AA" width="160" normalimage="uninstall_continue_normal.png" hotimage="uninstall_continue_hover.png" pushedimage="uninstall_continue_pressed.png" disabledimage="fast_Install_disable.png" padding="15,0,0,0" font="3" /> 
+                    <Control />
+                </HorizontalLayout>
+                <Control />
+            </VerticalLayout>
+            <VerticalLayout padding="10,0,10,0">
+                <Control />
+                <HorizontalLayout>
+                    <Label name="progressDetail" text="卸载中" textcolor="#FF000000" Font="1" autocalcwidth="true"/>
+                    <Label name="progressText" text="0%" textcolor="#FF000000" textpadding="5,0,0,0" Font="1"/>
+                    <Control />
+                </HorizontalLayout>
+                <Progress name="UnInstallProgressBar" height="14" bkimage="file='progress_gray.png' corner='3,0,7,0'" textcolor="#FF000000" disabledtextcolor="#FFA7A6AA" align="center" foreimage="file='progress_green.png' corner='3,0,70,0'" min="0" max="100" value="0" hor="true" />
+                <Control />
+            </VerticalLayout>
+            <VerticalLayout>
+                <Control />
+                <HorizontalLayout height="40">
+                    <Control />
+                    <Button name="unInstallOkBtn" text="确定" textcolor="#FFFFFFFF" disabledtextcolor="#FFA7A6AA" width="160" normalimage="uninstall_cancel_normal.png" hotimage="uninstall_cancel_hover.png" pushedimage="uninstall_cancel_pressed.png" font="3" /> 
+                    <Control />
+                </HorizontalLayout>
+                <Control />
+            </VerticalLayout>
+        </TabLayout>
+    </VerticalLayout>
+</Window>

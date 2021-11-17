@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Part>
+    <VerticalLayout name="4step">
+        <Control height="180"/>
+        <Label text="Program update has been downloaded" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="2"/>
+        <Label text="Please restart your computer now" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="2"/>
+        <Control />
+    </VerticalLayout>
+</Part>
