@@ -53,6 +53,10 @@ Function InstallProgressExt
     nsSkinEngine::NSISOnControlBindNSISScript "CancelDownloadBtn" $0
    ${EndIf}
 FunctionEnd
+;重新检查网络
+Function ReCheckNetStepExt
+    nsSkinEngine::NSISSetControlData "WizardTab"  "$varResourceDirBG_inspect.png"  "bkimage"
+FunctionEnd
 ;需要更新阶段扩展处理
 Function NeedUpdateStepExt
     nsSkinEngine::NSISSetControlData "WizardTab"  "$varResourceDirBG_use.png"  "bkimage"

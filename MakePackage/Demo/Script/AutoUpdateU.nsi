@@ -698,6 +698,7 @@ FunctionEnd
 Function DoNetErrorFunc
     nsSkinEngine::NSISSetTabLayoutCurrentIndex "WizardTab" "${STEP_CHECK_UPDATE}"
     nsSkinEngine::NSISSetTabLayoutCurrentIndex "BottomWizardTab" "${STEP_CHECK_UPDATE}"
+    Call ReCheckNetStepExt
     nsAutoUpdate::RequestUpdateInfo
 FunctionEnd
 
