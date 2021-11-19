@@ -22,7 +22,6 @@ Var rootDir
 !include "x64.nsh"
 !include "FileFunc.nsh"
 !include "StdUtils.nsh"
-!include "nsPublic.nsh"
 !include "LogicLib.nsh"
 !include "nsSkinEngine.nsh"
 !include "nsUtils.nsh"
@@ -553,6 +552,10 @@ Section RegistKeys
 	${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
     IntFmt $0 "0x%08X" $0
     WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" "$0"
+    
+    WriteIniStr "$INSTDIR\version.ini" "LocalVersion" "${CHANNEL_KEY}" "${CHANNEL_VALUE}"
+	FlushINI "$INSTDIR\version.ini"
+    
     Call RegistKeysExt
 SectionEnd
 
