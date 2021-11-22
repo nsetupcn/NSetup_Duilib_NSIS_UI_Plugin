@@ -29,6 +29,7 @@ Var IsBanDisturb
 Var IsHasUpdateMark
 Var IsRunAs
 Var IsAutoDown
+Var IsRetry
 
 Var varShowInstTimerId
 Var varCurrentStep
@@ -508,11 +509,15 @@ Function UpdateEventChangeCallback
             ${EndIf}
         ${EndIf}
         ${If} $IsAutoDown == 1
+        ${OrIf} $IsRetry == 1
             nsSkinEngine::NSISSetTabLayoutCurrentIndex "WizardTab" "${STEP_DOWNLOAD_FILES}"
             nsSkinEngine::NSISSetTabLayoutCurrentIndex "BottomWizardTab" "${STEP_DOWNLOAD_FILES}"
             nsSkinEngine::NSISSetControlData "newVersionTextStep3"  "$(UPGRADABLE_VERSION_MESSAGE)：$varCurrentVersion"  "text"
             nsAutoUpdate::DownloadUpdateFileListIni
         ${EndIf}
+        nsSkinEngine::NSISSetControlData "progressText"  "0%"  "text"
+        nsSkinEngine::NSISSetControlData "InstallProgressBar"  "0"  "ProgressInt"
+        nsSkinEngine::NSISSetControlData "InstallProgressBar"  "0" "TaskBarProgress"
     ${ElseIf} $varCurrentStep == '${EVENT_UPDATE_NO_NEED}'
      Call NoNeedUpdate
      Call NoNeedUpdateStepExt
@@ -581,6 +586,9 @@ Function UpdateEventChangeCallback
         Exec '"$EXEDIR\UpdatePatch.exe"'
         ${If} $IsAuto == 1
         ${AndIf} $IsBackstage == 1
+        ${If} $EXEFILE == ${UPDATE_TEMP_NAME}
+            SelfDel::del
+        ${EndIf}
         nsSkinEngine::NSISExitSkinEngine "false"
         ${Else}
         Call UpdateSuccess
@@ -599,6 +607,7 @@ Function UpdateEventChangeCallback
                 nsSkinEngine::NSISExitSkinEngine "false"
             ${EndIf}
         ${ElseIf} $varCurrentStep == '${EVENT_CHECK_UPDATE_ERROR}'
+        ${OrIf} $varCurrentStep == '${EVENT_DOWNLOAD_FILES_ERROR}'
          Call NetError
          Call NetErrorStepExt
          ${ElseIf} $varCurrentStep == '${EVENT_REPLACE_FILES_ERROR}'
@@ -700,6 +709,7 @@ Function DoNetErrorFunc
     nsSkinEngine::NSISSetTabLayoutCurrentIndex "BottomWizardTab" "${STEP_CHECK_UPDATE}"
     Call ReCheckNetStepExt
     nsAutoUpdate::RequestUpdateInfo
+    StrCpy $IsRetry "1"
 FunctionEnd
 
 Function DoRunLatterFunc
@@ -710,6 +720,9 @@ Function DoSuccessedFunc
     nsSkinEngine::NSISHideSkinEngine
     nsProcess::KillProcessByName "${MAIN_APP_NAME}"
     Exec '"$EXEDIR\${MAIN_LAUNCHAPP_NAME}"'
+    ${If} $EXEFILE == ${UPDATE_TEMP_NAME}
+        SelfDel::del
+    ${EndIf}
     nsSkinEngine::NSISExitSkinEngine "false"
 FunctionEnd
 
