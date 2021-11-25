@@ -51,7 +51,7 @@ VIAddVersionKey /LANG=2052 "Comments" "${PRODUCT_COMMENTS}"
 VIAddVersionKey /LANG=2052 "CompanyName" "${PRODUCT_COMMENTS}"
 VIAddVersionKey /LANG=2052 "LegalTrademarks" "${PRODUCT_NAME_EN}"
 VIAddVersionKey /LANG=2052 "LegalCopyright" "${PRODUCT_LegalCopyright}"
-VIAddVersionKey /LANG=2052 "FileDescription" "${PRODUCT_NAME}$(UPGRADE_PROCEDURE_MESSAGE)"
+VIAddVersionKey /LANG=2052 "FileDescription" "${PRODUCT_NAME}"
 VIAddVersionKey /LANG=2052 "FileVersion" ${FILE_VERSION}
 VIAddVersionKey /LANG=2052 "ProductVersion" ${PRODUCT_VERSION}
 

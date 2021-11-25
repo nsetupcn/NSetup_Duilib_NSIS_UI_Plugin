@@ -15,6 +15,7 @@ Var varAsynTimerId
 
 ; 引入的头文件
 !include "MUI.nsh"
+!include "x64.nsh"
 !include "FileFunc.nsh"
 !include "StdUtils.nsh"
 !include "nsPublic.nsh"
@@ -57,6 +58,10 @@ Function KillAllProcess
 FunctionEnd
 
 Function .onInit
+  ${If} ${RunningX64}
+    SetRegView 64
+  ${EndIf}
+  
   ClearErrors
   ${GetParameters} $R0 # 获得命令行
   ${GetOptions} $R0 "/UnInstall" $varOldFileDir # 在命令行里查找是否存在/T选项
