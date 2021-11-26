@@ -22,7 +22,6 @@ Var rootDir
 !include "x64.nsh"
 !include "FileFunc.nsh"
 !include "StdUtils.nsh"
-!include "nsPublic.nsh"
 !include "LogicLib.nsh"
 !include "nsSkinEngine.nsh"
 !include "nsUtils.nsh"
@@ -553,6 +552,10 @@ Section RegistKeys
 	${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
     IntFmt $0 "0x%08X" $0
     WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" "$0"
+    
+    WriteIniStr "$INSTDIR\version.ini" "LocalVersion" "${CHANNEL_KEY}" "${CHANNEL_VALUE}"
+	FlushINI "$INSTDIR\version.ini"
+    
     Call RegistKeysExt
 SectionEnd
 
@@ -561,6 +564,9 @@ Section CreateShorts
     ;创建开始菜单快捷方式
     CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME_EN}"
     CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME_EN}\${PRODUCT_NAME}.lnk" "$INSTDIR\${MAIN_LAUNCHAPP_NAME}"
+    ${If} ${PRODUCT_INSTALL_UAC_SHOTRCUT} == 1
+        ShellLink::SetRunAsAdministrator "$SMPROGRAMS\${PRODUCT_NAME_EN}\${PRODUCT_NAME}.lnk"
+    ${EndIf}
     CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME_EN}\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
 
@@ -572,8 +578,9 @@ Function OnCompleteDo
     ${If} $0 == "${CHECKED}"
       ;创建桌面快捷方式
     CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${MAIN_LAUNCHAPP_NAME}"
-        ;${StdUtils.InvokeShellVerb} $0 "$oldInstallPath" "${MAIN_LAUNCHAPP_NAME}" ${StdUtils.Const.ShellVerb.UnpinFromTaskbar}
-    ;${StdUtils.InvokeShellVerb} $0 "$INSTDIR" "${MAIN_LAUNCHAPP_NAME}" ${StdUtils.Const.ShellVerb.PinToTaskbar}
+    ${If} ${PRODUCT_INSTALL_UAC_SHOTRCUT} == 1
+        ShellLink::SetRunAsAdministrator "$DESKTOP\${PRODUCT_NAME}.lnk"
+    ${EndIf}
     ${EndIf}
     Call RefreshShellIcons
     nsSkinEngine::NSISSetControlData "InstallTab_sysCloseBtn"  "true"  "enable"

@@ -2,6 +2,7 @@
     Compile the script to use the Unicode version of NSIS
     The producers：www.nsetup.cn 
 */
+!include "nsPublic.nsh"
 !include "nsInstallSettings.nsh"
 !include "nsInstallDependSettings.nsh"
 !include "nsCustomVariables.nsh"
@@ -71,8 +72,6 @@ Function CustomInstallFuncExt
 FunctionEnd
 ;注册信息扩展操作
 Function RegistKeysExt
-	WriteIniStr "$INSTDIR\version.ini" "LocalVersion" "${CHANNEL_KEY}" "${CHANNEL_VALUE}"
-	FlushINI "$INSTDIR\version.ini"
 FunctionEnd
 ;扩展Sectipn
 Function SectionFuncExt
