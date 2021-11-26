@@ -564,6 +564,9 @@ Section CreateShorts
     ;创建开始菜单快捷方式
     CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME_EN}"
     CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME_EN}\${PRODUCT_NAME}.lnk" "$INSTDIR\${MAIN_LAUNCHAPP_NAME}"
+    ${If} ${PRODUCT_INSTALL_UAC_SHOTRCUT} == 1
+        ShellLink::SetRunAsAdministrator "$SMPROGRAMS\${PRODUCT_NAME_EN}\${PRODUCT_NAME}.lnk"
+    ${EndIf}
     CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME_EN}\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
 
@@ -575,8 +578,9 @@ Function OnCompleteDo
     ${If} $0 == "${CHECKED}"
       ;创建桌面快捷方式
     CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${MAIN_LAUNCHAPP_NAME}"
-        ;${StdUtils.InvokeShellVerb} $0 "$oldInstallPath" "${MAIN_LAUNCHAPP_NAME}" ${StdUtils.Const.ShellVerb.UnpinFromTaskbar}
-    ;${StdUtils.InvokeShellVerb} $0 "$INSTDIR" "${MAIN_LAUNCHAPP_NAME}" ${StdUtils.Const.ShellVerb.PinToTaskbar}
+    ${If} ${PRODUCT_INSTALL_UAC_SHOTRCUT} == 1
+        ShellLink::SetRunAsAdministrator "$DESKTOP\${PRODUCT_NAME}.lnk"
+    ${EndIf}
     ${EndIf}
     Call RefreshShellIcons
     nsSkinEngine::NSISSetControlData "InstallTab_sysCloseBtn"  "true"  "enable"

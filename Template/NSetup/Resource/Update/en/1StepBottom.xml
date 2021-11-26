@@ -2,6 +2,6 @@
 <Part>
     <HorizontalLayout padding="0,10,10,0" height="32">
         <Control />
-        <Button name="CancelCheckBtn" text="Later" textcolor="#FF423E31" width="112" padding="16,0,0,0" normalimage="msg_cancel_normal.png" hotimage="msg_cancel_hover.png" pushedimage="msg_cancel_pressed.png" font="1"/> 
+        <Button name="CancelCheckBtn" text="Later" textcolor="#FF423E31" width="96" padding="16,0,0,0" normalimage="btn_white_nor.png" hotimage="btn_white_hover.png" pushedimage="btn_white_pressed.png" font="1"/> 
     </HorizontalLayout>
 </Part>
