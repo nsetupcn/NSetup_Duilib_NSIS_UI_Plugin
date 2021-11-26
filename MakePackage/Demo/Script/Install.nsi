@@ -155,11 +155,14 @@ Function .onInit
 	 StrCpy $rootDir "$INSTDIR"
   ${EndIf}
   
-  ${If} ${PRODUCT_INSTALL_DIR} == 0
-		StrCpy $oldInstallPath "${DEFAULT_DIR}"
-	${ElseIf} ${PRODUCT_INSTALL_DIR} == 1
-		StrCpy $oldInstallPath "$PROGRAMFILES\${PRODUCT_NAME_EN}"
-	${EndIf}
+    ${If} ${PRODUCT_INSTALL_DIR} == 0
+        StrCpy $oldInstallPath "${DEFAULT_DIR}"
+    ${ElseIf} ${PRODUCT_INSTALL_DIR} == 1
+        StrCpy $oldInstallPath "$PROGRAMFILES\${PRODUCT_NAME_EN}"
+    ${ElseIf} ${PRODUCT_INSTALL_DIR} == 2
+        ${GetDrives} "HDD" "FindHDD"
+        StrCpy $oldInstallPath "$R2${PRODUCT_NAME_EN}"
+    ${EndIf}
 	
   ReadRegStr $INSTDIR HKCU "${PRODUCT_REG_KEY}" "installDir"
   ${If} $forceInstallPath != ""
