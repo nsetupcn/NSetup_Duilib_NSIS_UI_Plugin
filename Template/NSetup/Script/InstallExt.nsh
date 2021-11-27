@@ -2,12 +2,11 @@
     Compile the script to use the Unicode version of NSIS
     The producers：www.nsetup.cn 
 */
+!include "x64.nsh"
 !include "nsPublic.nsh"
 !include "nsInstallSettings.nsh"
 !include "nsInstallDependSettings.nsh"
 !include "nsCustomVariables.nsh"
-;自定义宏
-!define FILE_VERSION "4.0.1.0"
 ;初始化变量
 ;多语言 
 !insertmacro MUI_LANGUAGE "English"
@@ -34,25 +33,6 @@ Function OnInitExt
 FunctionEnd
 ;初始化界面扩展操作
 Function InstallProgressExt
-	;最小化按钮绑定函数
-   nsSkinEngine::NSISFindControl "InstallTab_sysMinBtn"
-   Pop $0
-   ${If} $0 == "-1"
-    MessageBox MB_OK "Do not have InstallTab_sysMinBtn"
-   ${Else}
-    GetFunctionAddress $0 OnInstallMinFunc
-    nsSkinEngine::NSISOnControlBindNSISScript "InstallTab_sysMinBtn" $0
-   ${EndIf}
-   
-    ;返回
-   nsSkinEngine::NSISFindControl "Select_InstallCancel_Btn"
-   Pop $0
-   ${If} $0 == "-1"
-    MessageBox MB_OK "Do not have Select_InstallCancel_Btn button"
-   ${Else}
-    GetFunctionAddress $0 InstallBackTab    
-        nsSkinEngine::NSISOnControlBindNSISScript "Select_InstallCancel_Btn"  $0
-   ${EndIf}
 FunctionEnd
 ;下一步扩展操作
 Function InstallNextTabExt
@@ -73,9 +53,19 @@ FunctionEnd
 ;注册信息扩展操作
 Function RegistKeysExt
 FunctionEnd
+;安装释放文件前
+Function BeforeInstallFiles
+FunctionEnd
+;安装释放文件后
+Function LaterInstallFiles
+FunctionEnd
 ;扩展Sectipn
 Function SectionFuncExt
    Call SectionInstallDependFuncExt
+FunctionEnd
+;点击完成后的附加动作
+Function OnCompleteBtnFuncExt
+    Exec '"$INSTDIR\${MAIN_LAUNCHAPP_NAME}"'
 FunctionEnd
 ;安装完成阶段扩展操作
 Function InstallCompleteExt

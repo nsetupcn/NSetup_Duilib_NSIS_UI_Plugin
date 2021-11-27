@@ -15,6 +15,7 @@
 !include "nsUtils.nsh"
 !include "nsProcess.nsh"
 !include "nsAutoUpdate.nsh"
+!include "AutoUpdateExt.nsh"
 
 ;定义变量
 Var Dialog
@@ -40,19 +41,17 @@ Var varUpdateTempVersion
 Var varResourceDir
 Var varKipVersion
 
-!include "AutoUpdateExt.nsh"
-
 ;Request application privileges for Windows Vista
 RequestExecutionLevel user
 ;文件版本声明-开始
-VIProductVersion ${FILE_VERSION}
+VIProductVersion ${PRODUCT_UPDATE_FILE_VERSION}
 VIAddVersionKey /LANG=2052 "ProductName" "${PRODUCT_NAME}"
 VIAddVersionKey /LANG=2052 "Comments" "${PRODUCT_COMMENTS}"
 VIAddVersionKey /LANG=2052 "CompanyName" "${PRODUCT_COMMENTS}"
 VIAddVersionKey /LANG=2052 "LegalTrademarks" "${PRODUCT_NAME_EN}"
 VIAddVersionKey /LANG=2052 "LegalCopyright" "${PRODUCT_LegalCopyright}"
 VIAddVersionKey /LANG=2052 "FileDescription" "${PRODUCT_NAME}"
-VIAddVersionKey /LANG=2052 "FileVersion" ${FILE_VERSION}
+VIAddVersionKey /LANG=2052 "FileVersion" ${PRODUCT_UPDATE_FILE_VERSION}
 VIAddVersionKey /LANG=2052 "ProductVersion" ${PRODUCT_VERSION}
 
 OutFile "..\..\..\Temp\Temp\AutoUpdate.exe"
