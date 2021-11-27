@@ -19,7 +19,6 @@ Var rootDir
 !define MUI_ICON "..\Resource\Package\app.ico"
 ; 引入的头文件
 !include "MUI.nsh"
-!include "x64.nsh"
 !include "FileFunc.nsh"
 !include "StdUtils.nsh"
 !include "LogicLib.nsh"
@@ -29,14 +28,14 @@ Var rootDir
 !include "InstallExt.nsh"
 RequestExecutionLevel admin
 ;文件版本声明-开始
-VIProductVersion ${FILE_VERSION}
+VIProductVersion ${PRODUCT_INSTALL_FILE_VERSION}
 VIAddVersionKey /LANG=2052 "ProductName" "${PRODUCT_NAME}"
 VIAddVersionKey /LANG=2052 "Comments" "${PRODUCT_COMMENTS}"
 VIAddVersionKey /LANG=2052 "CompanyName" "${PRODUCT_COMMENTS}"
 VIAddVersionKey /LANG=2052 "LegalTrademarks" "${PRODUCT_NAME_EN}"
 VIAddVersionKey /LANG=2052 "LegalCopyright" "${PRODUCT_LegalCopyright}"
 VIAddVersionKey /LANG=2052 "FileDescription" "${PRODUCT_NAME}安装程序"
-VIAddVersionKey /LANG=2052 "FileVersion" ${FILE_VERSION}
+VIAddVersionKey /LANG=2052 "FileVersion" ${PRODUCT_INSTALL_FILE_VERSION}
 VIAddVersionKey /LANG=2052 "ProductVersion" ${PRODUCT_VERSION}
 ;文件版本声明-结束
 
@@ -201,11 +200,33 @@ ${If} $0 == 100
 	GetFunctionAddress $varAsynTimerId OnCompleteDoFunc
 	nsSkinEngine::NSISCreatTimer $varAsynTimerId 1
 ${EndIf}
-nsSkinEngine::NSISSetControlData "InstallProgressBar"  "$0"  "ProgressInt"
-nsSkinEngine::NSISSetControlData "progressText"  "$0%"  "text"
+${If} ${PRODUCT_INSTALL_REAL_PROGRESS_TYPE} == 0
+    nsSkinEngine::NSISSetControlData "InstallProgressBar"  "$0"  "ProgressInt"
+    nsSkinEngine::NSISSetControlData "progressText"  "$0%"  "text"
+${EndIf}
 FunctionEnd
 
 Function InstallProgress
+   ;最小化按钮绑定函数
+   nsSkinEngine::NSISFindControl "InstallTab_sysMinBtn"
+   Pop $0
+   ${If} $0 == "-1"
+    MessageBox MB_OK "Do not have InstallTab_sysMinBtn"
+   ${Else}
+    GetFunctionAddress $0 OnInstallMinFunc
+    nsSkinEngine::NSISOnControlBindNSISScript "InstallTab_sysMinBtn" $0
+   ${EndIf}
+   
+    ;返回
+   nsSkinEngine::NSISFindControl "Select_InstallCancel_Btn"
+   Pop $0
+   ${If} $0 == "-1"
+    MessageBox MB_OK "Do not have Select_InstallCancel_Btn button"
+   ${Else}
+    GetFunctionAddress $0 InstallBackTab    
+        nsSkinEngine::NSISOnControlBindNSISScript "Select_InstallCancel_Btn"  $0
+   ${EndIf}
+   
    ;关闭按钮绑定函数
    nsSkinEngine::NSISFindControl "InstallTab_sysCloseBtn"
    Pop $0
@@ -513,6 +534,7 @@ Section "-LogSetOn"
 SectionEnd
 
 Section InstallFiles
+   Call BeforeInstallFiles
   ${If} ${PRODUCT_OVERLAY_INSTALL_TYPE} == 1
     CopyFiles /SILENT "$oldInstallPath/uninst.exe" "$TEMP\uninst.exe"
     ExecWait '"$TEMP\uninst.exe" /UnInstall $oldInstallPath /S'
@@ -529,6 +551,7 @@ Section InstallFiles
   SetOutPath "$INSTDIR"
   SetOverwrite try
   File /r "..\..\..\Temp\Temp\*.*"
+  Call LaterInstallFiles
 SectionEnd
 
 Section SectionExt
@@ -552,7 +575,7 @@ Section RegistKeys
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
-	${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
+    ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
     IntFmt $0 "0x%08X" $0
     WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" "$0"
     
@@ -613,7 +636,7 @@ FunctionEnd
 	
 Function OnCompleteBtnFunc
     nsSkinEngine::NSISHideSkinEngine
-    Exec '"$INSTDIR\${MAIN_LAUNCHAPP_NAME}"'
+    Call OnCompleteBtnFuncExt
     ;nsShellExecAsUser::ShellExecAsUser "open" "$INSTDIR\${MAIN_LAUNCHAPP_NAME}" "/launch"
 	${If} $isSelfDel == "1"
 		SelfDel::del /RMDIR

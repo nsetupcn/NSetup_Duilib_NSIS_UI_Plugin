@@ -3,8 +3,8 @@
     The producers：www.nsetup.cn 
 */
 ;自定义宏
+!include "nsUpdateSettings.nsh"
 !define MUI_ICON "..\Resource\Update\app.ico"
-!define FILE_VERSION "1.3.1.2"
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "SimpChinese"
 LangString LANG_MESSAGE ${LANG_SIMPCHINESE} "zh-CN"
