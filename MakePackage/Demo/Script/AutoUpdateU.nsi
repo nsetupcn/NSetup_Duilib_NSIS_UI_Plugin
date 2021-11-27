@@ -15,7 +15,6 @@
 !include "nsUtils.nsh"
 !include "nsProcess.nsh"
 !include "nsAutoUpdate.nsh"
-!include "AutoUpdateExt.nsh"
 
 ;定义变量
 Var Dialog
@@ -40,6 +39,8 @@ Var varCurrentParameters
 Var varUpdateTempVersion
 Var varResourceDir
 Var varKipVersion
+
+!include "AutoUpdateExt.nsh"
 
 ;Request application privileges for Windows Vista
 RequestExecutionLevel user

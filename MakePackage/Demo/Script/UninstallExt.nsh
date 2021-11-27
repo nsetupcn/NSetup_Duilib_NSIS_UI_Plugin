@@ -3,6 +3,7 @@
     The producers：www.nsetup.cn 
 */
 ;自定义宏
+!include "nsInstallSettings.nsh"
 !define FILE_VERSION "4.0.1.0"
 ;初始化变量
 Var installBiZhiPath
