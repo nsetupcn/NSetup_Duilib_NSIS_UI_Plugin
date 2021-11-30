@@ -1,13 +1,15 @@
-﻿/*
+﻿ /*
     Compile the script to use the Unicode version of NSIS
     The producers：www.nsetup.cn 
 */
 !include "x64.nsh"
+!include "WinVer.nsh" 
 !include "nsPublic.nsh"
 !include "nsInstallSettings.nsh"
 !include "nsInstallDependSettings.nsh"
 !include "nsCustomVariables.nsh"
-;初始化变量
+!include "nsAutoUpdate.nsh"
+
 ;多语言 
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "SimpChinese"
@@ -28,11 +30,22 @@ LangString APP_RUNNING_MESSAGE ${LANG_ENGLISH} "The current program is running, 
 LangString APP_EXIT_MESSAGE ${LANG_ENGLISH} "Are you sure to exit the installation process?"
 LangString SELECT_FOLD_MESSAGE ${LANG_ENGLISH} "Please select a folder"
 
+LangString DOWNLOADING_MESSAGE ${LANG_SIMPCHINESE} "正在下载"
+LangString DOWNLOADING_MESSAGE ${LANG_ENGLISH} "downloading"
+
+Var varShowInstTimerId
+Var needReboot
+Var varCurrentStep
+Var needDownload
 ;onInit扩展操作
 Function OnInitExt
 FunctionEnd
 ;初始化界面扩展操作
 Function InstallProgressExt
+    ${If} ${PRODUCT_INSTALL_MODEL_TYPE} == 3
+        GetFunctionAddress $varShowInstTimerId InitUpdate
+        nsSkinEngine::NSISCreatTimer $varShowInstTimerId 1
+    ${EndIf}
 FunctionEnd
 ;下一步扩展操作
 Function InstallNextTabExt
@@ -40,9 +53,31 @@ FunctionEnd
 
 ;安装过程中扩展操作
 Function InstallingExt
-   nsSkinEngine::NSISInitAnimationBkControl "installTopBg" "$varResourceDir$(LANG_MESSAGE)" "4" "1" "1" "1" "0" 0 0
-   nsSkinEngine::NSISStartAnimationBkControl "installTopBg" "1" "5000"
+    nsSkinEngine::NSISInitAnimationBkControl "installTopBg" "$varResourceDir$(LANG_MESSAGE)" "4" "1" "1" "1" "0" 0 0
+    nsSkinEngine::NSISStartAnimationBkControl "installTopBg" "1" "5000"
+    ${If} ${PRODUCT_INSTALL_MODEL_TYPE} == 3
+        Call InstallNextTab
+        CreateDirectory "$TEMP\${PRODUCT_NAME}Depend" 
+        Delete "$TEMP\${PRODUCT_NAME}Depend\${PRODUCT_INSTALL_ONLINE_EXE_NAME}"
+        nsAutoUpdate::AddOneDownloadFileTask ${PRODUCT_INSTALL_ONLINE_MAIN_URL} ${PRODUCT_INSTALL_ONLINE_SPARE_URL} "$TEMP\${PRODUCT_NAME}Depend" "${PRODUCT_INSTALL_ONLINE_NAME_TIP}"
+        nsAutoUpdate::SatrtDownloadUpdateFiles
+    ${Else}
+        nsSkinEngine::NSISStartInstall "true"
+    ${EndIf}
 FunctionEnd
+
+Function InitUpdate
+    nsSkinEngine::NSISKillTimer $varShowInstTimerId
+    CreateDirectory "$APPDATA\${PRODUCT_NAME_EN}"
+    nsAutoUpdate::SetAppServerSettings "${PRODUCT_UPDATE_ID}" "65B70DE7540C42759156483165E35215" "${PRODUCT_UPDATE_ADDRESS}"
+    nsAutoUpdate::InitLog "false" "${PRODUCT_NAME_EN}"
+    nsAutoUpdate::SetAppSettings "${UPDATE_NAME}" "$EXEDIR" "${PRODUCT_NAME_EN}" "${PRODUCT_UPDATE_KEY}"
+    GetFunctionAddress $0 UpdateEventChangeCallback 
+    nsAutoUpdate::SetUpdateEventChangeCallback $0
+    GetFunctionAddress $0 ProgressChangeCallback 
+    nsAutoUpdate::SetProgressChangeCallback $0
+FunctionEnd
+
 ;开始安装扩展操作
 Function InstallPageFuncExt
 FunctionEnd
@@ -58,6 +93,11 @@ Function BeforeInstallFiles
 FunctionEnd
 ;安装释放文件后
 Function LaterInstallFiles
+    ${If} ${PRODUCT_INSTALL_MODEL_TYPE} != 3
+        SetOutPath "$INSTDIR"
+        SetOverwrite try
+        File /r "..\..\..\Temp\Temp\*.*"
+    ${EndIf}
 FunctionEnd
 ;扩展Sectipn
 Function SectionFuncExt
@@ -71,4 +111,32 @@ FunctionEnd
 Function InstallCompleteExt
    nsSkinEngine::NSISStopAnimationBkControl "installTopBg"
    nsSkinEngine::NSISSetControlData "installTopBg"  "$varResourceDir$(LANG_MESSAGE)/installComplete.png"  "bkimage"
+FunctionEnd
+
+Function UpdateEventChangeCallback
+    Pop $varCurrentStep
+    ${If} $varCurrentStep == '${EVENT_DOWNLOAD_FILES_SUCCESS}'
+        nsSkinEngine::NSISGetControlData "autoRunCheckBox" "Checked" ;
+        Pop $0
+        ${If} $0 == "${CHECKED}"
+            StrCpy $R0 "/D $INSTDIR /Install /AutoRun"
+        ${Else}
+            StrCpy $R0 "/D $INSTDIR /Install"
+        ${EndIf}
+        
+        Exec '"$TEMP\${PRODUCT_NAME}Depend\${PRODUCT_INSTALL_ONLINE_EXE_NAME}" $R0'
+        nsSkinEngine::NSISExitSkinEngine "false"
+    ${EndIf}
+FunctionEnd
+
+Function ProgressChangeCallback
+    Pop $R1
+    Pop $R2
+    Pop $R3
+    nsSkinEngine::NSISSetControlData "progressText"  "$R1%"  "text"
+    nsSkinEngine::NSISSetControlData "InstallProgressBar"  "$R1"  "ProgressInt"
+    nsSkinEngine::NSISSetControlData "InstallProgressBar"  "$R1" "TaskBarProgress"
+    nsSkinEngine::NSISSetControlData "progressDetail"  "280"  "width"
+    nsSkinEngine::NSISSetControlData "progressDetail"  "$(DOWNLOADING_MESSAGE)：$R2"  "text"
+    DetailPrint '进度：$R1  下载文件名：$R2  是否完成：$R3'
 FunctionEnd

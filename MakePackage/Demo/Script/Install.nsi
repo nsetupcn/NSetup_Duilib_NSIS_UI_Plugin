@@ -489,7 +489,6 @@ Function StartInstallFunc
      nsSkinEngine::NSISSetControlData "InstallProgressBar"  "0"  "ProgressInt"
      nsSkinEngine::NSISSetControlData "progressText"  "0%"  "text"
      Call InstallingExt
-     nsSkinEngine::NSISStartInstall "true"
      ${EndIf} 
     Call InstallPageFuncExt
 FunctionEnd
@@ -548,9 +547,6 @@ Section InstallFiles
             RMDir /r /REBOOTOK "$oldInstallPath\$varLocalVersion"
         ${EndIf}
   ${EndIf}
-  SetOutPath "$INSTDIR"
-  SetOverwrite try
-  File /r "..\..\..\Temp\Temp\*.*"
   Call LaterInstallFiles
 SectionEnd
 

@@ -4,9 +4,6 @@
 */
 ;自定义宏
 !include "nsInstallSettings.nsh"
-!define FILE_VERSION "4.0.1.0"
-;初始化变量
-Var installBiZhiPath
 ;多语言 
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "SimpChinese"
