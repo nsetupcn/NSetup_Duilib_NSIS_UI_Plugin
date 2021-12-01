@@ -1,13 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns='http://www.w3.org/1999/xhtml'>
-
-<head>
-<title>Scripting Reference</title>
-<meta name="generator" content="Halibut v1.0 (NSIS Custom Build, SVN:r6192) xhtml-backend" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Scripting Reference</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="generator" content="Halibut v1.0 (NSIS Custom Build, SVN:r7318) xhtml-backend" />
 <link rel="stylesheet" href="style.css" type='text/css' />
 </head>
-
 <body>
 <p><a href='Chapter3.html'>Previous</a> | <a href='Contents.html'>Contents</a> | <a href='Chapter5.html'>Next</a></p>
 <ul>
@@ -175,6 +171,20 @@ MessageBox MB_YESNO|MB_ICONQUESTION \
     still a comment here...
 </pre>
 
+<p><b>Compiler Commands</b></p>
+
+<p>Compiler commands start with a ! and are executed at compile time.</p>
+<pre>!define MESSAGE &quot;Hello&quot;
+
+!ifdef MESSAGE
+  MessageBox MB_OK &quot;${MESSAGE}&quot;
+!else
+  !error &quot;MESSAGE not defined, cannot continue!&quot;
+!endif
+</pre>
+
+<p><a href="Chapter5.html#comptime">More information...</a></p>
+
 <p><b>Configuration file</b></p>
 
 <p>If a file named &quot;nsisconf.nsh&quot; in the config directory exists, it will be included by default before any scripts (unless the /NOCONFIG command line parameter is used). The config directory on Windows is the same directory as makensis.exe is in. On other platforms this is set at install time and defaults to $PREFIX/etc/. You can alter this at runtime, see <a href="Chapter3.html#usageenvironment">section 3.1.3</a> for more information.</p>
@@ -210,7 +220,7 @@ FunctionEnd
 
 <p>The installation directory ($INSTDIR is modifiable using <a href="Chapter4.html#StrCpy">StrCpy</a>, <a href="Chapter4.html#readregstr">ReadRegStr</a>, <a href="Chapter4.html#readinistr">ReadINIStr</a>, etc. - This could be used, for example, in the <a href="Chapter4.html#oninit">.onInit</a> function to do a more advanced detection of install location).</p>
 
-<p>Note that in uninstaller code, $INSTDIR contains the directory where the uninstaller lies. It does <b>not</b> necessarily contain the same value it contained in the installer. For example, if you write the uninstaller to $WINDIR and the user doesn't move it, $INSTDIR will be $WINDIR in the uninstaller. If you write the uninstaller to another location, you should keep the installer's $INSTDIR in the registry or an alternative storing facility and read it in the uninstaller.</p>
+<p>Note that in uninstaller code, $INSTDIR contains the directory where the uninstaller lies. It does <strong>not</strong> necessarily contain the same value it contained in the installer. For example, if you write the uninstaller to $WINDIR and the user doesn't move it, $INSTDIR will be $WINDIR in the uninstaller. If you write the uninstaller to another location, you should keep the installer's $INSTDIR in the registry or an alternative storing facility and read it in the uninstaller.</p>
 
 <p><em>$OUTDIR</em></p>
 
@@ -233,11 +243,11 @@ FunctionEnd
 
 <p><em>$PROGRAMFILES</em>, <em>$PROGRAMFILES32</em>, <em>$PROGRAMFILES64</em></p>
 
-<p>The program files directory (usually <code>C:\Program Files</code> but detected at runtime). On Windows x64, $PROGRAMFILES and $PROGRAMFILES32 point to <code>C:\Program Files (x86)</code> while $PROGRAMFILES64 points to <code>C:\Program Files</code>. Use $PROGRAMFILES64 when installing x64 applications.</p>
+<p>The program files directory (usually <code>C:\Program Files</code> but detected at runtime). On 64-bit Windows, $PROGRAMFILES and $PROGRAMFILES32 point to <code>C:\Program Files (x86)</code> while $PROGRAMFILES64 points to <code>C:\Program Files</code>. Use $PROGRAMFILES64 when installing 64-bit applications.</p>
 
 <p><em>$COMMONFILES</em>, <em>$COMMONFILES32</em>, <em>$COMMONFILES64</em></p>
 
-<p>The common files directory. This is a directory for components that are shared across applications (usually <code>C:\Program Files\Common Files</code> but detected at runtime). On Windows x64, $COMMONFILES and $COMMONFILES32 point to <code>C:\Program Files (x86)\Common Files</code> while $COMMONFILES64 points to <code>C:\Program Files\Common Files</code>. Use $COMMONFILES64 when installing x64 applications.</p>
+<p>The common files directory. This is a directory for components that are shared across applications (usually <code>C:\Program Files\Common Files</code> but detected at runtime). On 64-bit Windows, $COMMONFILES and $COMMONFILES32 point to <code>C:\Program Files (x86)\Common Files</code> while $COMMONFILES64 points to <code>C:\Program Files\Common Files</code>. Use $COMMONFILES64 when installing 64-bit applications.</p>
 
 <p><em>$DESKTOP</em></p>
 
@@ -291,7 +301,7 @@ FunctionEnd
 
 <p><em>$DOCUMENTS</em></p>
 
-<p>The documents directory. A typical path for the current user is <code>C:\Documents and Settings\Foo\My Documents</code>. The context of this constant (All Users or Current user) depends on the <a href="Chapter4.html#setshellvarcontext">SetShellVarContext</a> setting. The default is the current user.</p>
+<p>The documents directory. A typical path for the current user is <code>C:\Users\Foo\My Documents</code>. The context of this constant (All Users or Current user) depends on the <a href="Chapter4.html#setshellvarcontext">SetShellVarContext</a> setting. The default is the current user.</p>
 
 <p>This constant is not available on Windows 95 unless Internet Explorer 4 is installed.</p>
 
@@ -379,7 +389,7 @@ FunctionEnd
 
 <p><em>$PROFILE</em></p>
 
-<p>The user's profile directory. A typical path is <code>C:\Documents and Settings\Foo</code>.</p>
+<p>The user's profile directory. A typical path is <code>C:\Users\Foo</code>.</p>
 
 <p>This constant is available on Windows 2000 and above.</p>
 
@@ -414,6 +424,10 @@ FunctionEnd
 <p><em>$PLUGINSDIR</em></p>
 
 <p>The path to a temporary folder created upon the first usage of a plug-in or a call to <a href="Chapter4.html#initpluginsdir">InitPluginsDir</a>. This folder is automatically deleted when the installer exits. This makes this folder the ideal folder to hold INI files for <a href="../Docs/InstallOptions/Readme.html">InstallOptions</a>, bitmaps for the splash plug-in, or any other file that a plug-in needs to work.</p>
+
+<p><em>$USER..</em> and <em>$COMMON..</em></p>
+
+<p>A handful of constants are available as aliases that are not affected by <a href="Chapter4.html#setshellvarcontext">SetShellVarContext</a>: <em>$USERTEMPLATES</em>, <em>$USERSTARTMENU</em>, <em>$USERSMPROGRAMS</em>, <em>$USERDESKTOP</em>, <em>$COMMONTEMPLATES</em>, <em>$COMMONSTARTMENU</em>, <em>$COMMONSMPROGRAMS</em>, <em>$COMMONDESKTOP</em> and <em>$COMMONPROGRAMDATA</em>.</p>
 <a name="varstrings"></a><h3>4.2.4 Constants Used in Strings</h3>
 
 <p><em>$$</em></p>
@@ -717,7 +731,7 @@ SectionEnd
 
 <p>The first <a href="Chapter4.html#delete">Delete</a> instruction works (deleting the uninstaller), because the uninstaller is transparently copied to the system temporary directory for the uninstall.</p>
 
-<p>Note that in uninstaller code, $INSTDIR contains the directory where the uninstaller lies. It does <b>not</b> necessarily contain the same value it contained in the installer.</p>
+<p>Note that in uninstaller code, $INSTDIR contains the directory where the uninstaller lies. It does <strong>not</strong> necessarily contain the same value it contained in the installer.</p>
 <a name="functions"></a><h2>4.7 Functions</h2>
 
 <p>Functions are similar to Sections in that they contain zero or more instructions. User functions are not called by the installer directly, instead they are called from Sections using the <a href="Chapter4.html#call">Call</a> instruction. Callback functions will be called by the installer when a certain event occurs.</p>
@@ -1183,9 +1197,9 @@ LicenseForceSelection off
 
 <p>Declare that the installer can handle paths longer than MAX_PATH. Only supported on Windows 10 Anniversary Update and later.</p>
 
-<p><div class="wb"> <b>Note: </b> Instructions like CopyFiles and CreateShortcut do not support long paths! </div></p>
+<p><div class="wb"> <strong>Note:</strong> Instructions like CopyFiles and CreateShortcut do not support long paths! </div></p>
 
-<p><div class="wb"> <b>Note: </b> Has no effect if the &quot;Enable Win32 long paths&quot; policy is not enabled. </div></p>
+<p><div class="wb"> <strong>Note:</strong> Has no effect if the &quot;Enable Win32 long paths&quot; policy is not enabled. </div></p>
 <a name="amanifestsupportedos"></a><h4>4.8.1.31 ManifestSupportedOS</h4>
 <pre>none|all|WinVista|<b>Win7|Win8|Win8.1|Win10</b>|{GUID} [...]
 </pre>
@@ -1224,6 +1238,7 @@ LicenseForceSelection off
 <pre>PEAddResource &quot;myimage.bmp&quot; &quot;#2&quot; &quot;#1337&quot;
 PEAddResource &quot;mybonus.ico&quot; &quot;#Icon&quot; &quot;#200&quot;
 PEAddResource &quot;myimage.png&quot; &quot;PNG&quot; &quot;#1234&quot;
+PEAddResource &quot;res://$%WINDIR%/Explorer.exe/#Icon/#101&quot; &quot;#Icon&quot; &quot;#1337&quot;
 </pre>
 <a name="aperemoveresource"></a><h4>4.8.1.36 PERemoveResource</h4>
 <pre>[/NOERRORS] restype resname reslang|ALL
@@ -1436,7 +1451,7 @@ File program.cfg # config file we don't want to overwrite
 SetOverwrite on
 </pre>
 <a name="aunicodetarget"></a><h4>4.8.2.9 Unicode</h4>
-<pre>true|<b>false</b>
+<pre><b>true</b>|false
 </pre>
 
 <p>Generate a <a href="Chapter1.html#intro-unicode">Unicode installer</a>. It can only be used outside of sections and functions and before any data is compressed.</p>
@@ -1480,11 +1495,11 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} &quot;FileVersion&quot; &quot;1.2.3&quot;
 <pre>[/REBOOTOK] file
 </pre>
 
-<p>Delete file (which can be a file or wildcard, but should be specified with a full path) from the target system. If /REBOOTOK is specified and the file cannot be deleted then the file is deleted when the system reboots -- if the file will be deleted on a reboot, the reboot flag will be set. The error flag is set if files are found and cannot be deleted. The error flag is not set when trying to delete a file that does not exist.</p>
+<p>Delete file (which can be a file or wildcard, but should be specified with a full path) on the target system. If /REBOOTOK is specified and the file cannot be deleted then the file is deleted when the system reboots -- if the file will be deleted on a reboot, the reboot flag will be set. The error flag is set if files are found and cannot be deleted. The error flag is not set when trying to delete a file that does not exist.</p>
 <pre>Delete $INSTDIR\somefile.dat
 </pre>
 
-<p><div class="wb"> <b>Warning:</b> The /REBOOTOK switch requires administrator rights on Windows NT and later. </div></p>
+<p><div class="wb"> <strong>Warning:</strong> The /REBOOTOK switch requires administrator rights on Windows NT and later. </div></p>
 <a name="exec"></a><h4>4.9.1.2 Exec</h4>
 <pre>command
 </pre>
@@ -1494,20 +1509,20 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} &quot;FileVersion&quot; &quot;1.2.3&quot;
 Exec '&quot;$INSTDIR\someprogram.exe&quot; some parameters'
 </pre>
 <a name="execshell"></a><h4>4.9.1.3 ExecShell</h4>
-<pre>[/INVOKEIDLIST] action command [parameters] [SW_SHOWDEFAULT | SW_SHOWNORMAL | SW_SHOWMAXIMIZED | SW_SHOWMINIMIZED | SW_HIDE]
+<pre>[flags] action file [parameters] [SW_SHOWDEFAULT | SW_SHOWNORMAL | SW_SHOWMAXIMIZED | SW_SHOWMINIMIZED | SW_HIDE]
 </pre>
 
-<p>Execute the specified program using ShellExecuteEx. Note that action is usually &quot;open&quot;, &quot;print&quot;, etc, but can be an empty string to use the default action. Parameters and the show type are optional. $OUTDIR is used as the working directory. The error flag is set if the process could not be launched.</p>
+<p>Execute the specified file using ShellExecuteEx. Note that <code>action</code> is usually &quot;open&quot;, &quot;print&quot;, etc, but can be an empty string to use the default action. <code>Parameters</code> and the show type are optional. $OUTDIR is used as the working directory. The error flag is set if the file could not be launched. <code>Flags</code> can be any combination of /ALLOWERRORUI, /DOENVSUBST and /INVOKEIDLIST.</p>
 <pre>ExecShell &quot;open&quot; &quot;http://nsis.sf.net/&quot;
 ExecShell &quot;&quot; &quot;$SysDir\Notepad.exe&quot; &quot;&quot; SW_SHOWMAXIMIZED
 ExecShell &quot;print&quot; &quot;$INSTDIR\readme.txt&quot;
 ExecShell /INVOKEIDLIST &quot;properties&quot; &quot;$TEMP&quot;
 </pre>
 <a name="execshellwait"></a><h4>4.9.1.4 ExecShellWait</h4>
-<pre>[/INVOKEIDLIST] action command [parameters] [SW_SHOWDEFAULT | SW_SHOWNORMAL | SW_SHOWMAXIMIZED | SW_SHOWMINIMIZED | SW_HIDE]
+<pre>[flags] action file [parameters] [SW_SHOWDEFAULT | SW_SHOWNORMAL | SW_SHOWMAXIMIZED | SW_SHOWMINIMIZED | SW_HIDE]
 </pre>
 
-<p>Execute the specified program using ExecShell and wait for executed process to quit. It will only wait for executable files, not other file types nor URLs.</p>
+<p>Execute the specified file using ExecShell and wait for executed process to quit. It will only wait for executable files, not other file types nor URLs.</p>
 <a name="execwait"></a><h4>4.9.1.5 ExecWait</h4>
 <pre>command [user_var(exit code)]
 </pre>
@@ -1537,7 +1552,7 @@ File /r /x CVS myproject\*.*
 File /r /x *.res /x *.obj /x *.pch source\*.*
 </pre>
 
-<p><b>Note:</b> when using the <em>/r</em> switch, both matching directories and files will be searched. This is always done with or without the use of wildcards, even if the given path perfectly matches one directory. That means, the following directory structure:</p>
+<p><strong>Note:</strong> When using the <em>/r</em> switch, both matching directories and files will be searched. This is always done with or without the use of wildcards, even if the given path perfectly matches one directory. That means, the following directory structure:</p>
 <pre>&lt;DIR&gt; something
   file.dat
   another.dat
@@ -1572,7 +1587,9 @@ File /r /x *.res /x *.obj /x *.pch source\*.*
 <pre>Rename $INSTDIR\file.ext $INSTDIR\file.dat
 </pre>
 
-<p><div class="wb"> <b>Warning:</b> The /REBOOTOK switch requires administrator rights on Windows NT and later. </div></p>
+<p><div class="wb"> <strong>Warning:</strong> The /REBOOTOK switch requires administrator rights on Windows NT and later. </div></p>
+
+<p><div class="wb"> <strong>Warning:</strong> Files cannot be moved from one drive to another if a reboot is required. </div></p>
 <a name="reservefile"></a><h4>4.9.1.9 ReserveFile</h4>
 <pre>[/nonfatal] [/r] [/x file|wildcard [...]] file [file...] | [/nonfatal] /plugin file.dll
 </pre>
@@ -1609,9 +1626,9 @@ SetOutPath $TEMP
 RMDir $TEMP\dir
 </pre>
 
-<p><div class="wb"> <b>Warning:</b> Using <em>RMDir /r $INSTDIR</em> in the uninstaller is not safe. Though it is unlikely, the user might select to install to the root of the Program Files folder and this command would wipe out the entire Program Files folder, including all other installed programs! The user can also put other files in the installation folder and wouldn't expect them to get deleted along with the program. Solutions are <a href="https://nsis.sourceforge.io/Uninstall_only_installed_files">available</a> for easily uninstalling only files which were installed by the installer. </div></p>
+<p><div class="wb"> <strong>Warning:</strong> Using <em>RMDir /r $INSTDIR</em> in the uninstaller is not safe. Though it is unlikely, the user might select to install to the root of the Program Files folder and this command would wipe out the entire Program Files folder, including all other installed programs! The user can also put other files in the installation folder and wouldn't expect them to get deleted along with the program. Solutions are <a href="https://nsis.sourceforge.io/Uninstall_only_installed_files">available</a> for easily uninstalling only files which were installed by the installer. </div></p>
 
-<p><div class="wb"> <b>Warning:</b> The /REBOOTOK switch requires administrator rights on Windows NT and later. </div></p>
+<p><div class="wb"> <strong>Warning:</strong> The /REBOOTOK switch requires administrator rights on Windows NT and later. </div></p>
 <a name="setoutpath"></a><h4>4.9.1.12 SetOutPath</h4>
 <pre>outpath
 </pre>
@@ -1851,13 +1868,21 @@ CopyFiles $INSTDIR\*.dat $INSTDIR\backup
 </pre>
 
 <p>Creates a shortcut 'link.lnk' that links to 'target.file', with optional parameters 'parameters'. You must specify an absolute path to the .lnk file. The icon used for the shortcut is 'icon.file,icon_index_number'; for default icon settings use empty strings for both icon.file and icon_index_number. start_options should be one of: <em>SW_SHOWNORMAL</em>, <em>SW_SHOWMAXIMIZED</em>, <em>SW_SHOWMINIMIZED</em>, or an empty string. keyboard_shortcut should be in the form of 'flag|c' where flag can be a combination (using |) of: <em>ALT</em>, <em>CONTROL</em>, <em>EXT</em>, or <em>SHIFT</em>. c is the character to use (a-z, A-Z, 0-9, F1-F24, etc). Note that no spaces are allowed in this string. A good example is &quot;ALT|CONTROL|F8&quot;. $OUTDIR is stored as the shortcut's working directory property. You can change it by using <a href="Chapter4.html#setoutpath">SetOutPath</a> before creating the shortcut or use /NoWorkingDir if you don't need to set the working directory property. description should be the description of the shortcut, or comment as it is called under XP. The error flag is set if the shortcut cannot be created (i.e. either of the paths (link or target) does not exist, or some other error).</p>
-<pre>CreateDirectory &quot;$SMPROGRAMS\My Company&quot;
+<pre>CreateShortcut &quot;$DESKTOP\My Program.lnk&quot; &quot;$INSTDIR\My Program.exe&quot;
+CreateDirectory &quot;$SMPROGRAMS\My Company&quot;
 CreateShortcut &quot;$SMPROGRAMS\My Company\My Program.lnk&quot; &quot;$INSTDIR\My Program.exe&quot; \
   &quot;some command line parameters&quot; &quot;$INSTDIR\My Program.exe&quot; 2 SW_SHOWNORMAL \
   ALT|CONTROL|SHIFT|F5 &quot;a description&quot;
 </pre>
-<a name="getdllversion"></a><h4>4.9.3.5 GetDLLVersion</h4>
-<pre>filename user_var(high dword output) user_var(low dword output)
+<a name="getwinver"></a><h4>4.9.3.5 GetWinVer</h4>
+<pre>user_var(output) Major|Minor|Build|ServicePack
+</pre>
+
+<p>Gets the Windows version as reported by GetVersionEx. WinVer.nsh is the preferred method for performing Windows version checks.</p>
+<pre>GetWinVer $1 Build
+</pre>
+<a name="getdllversion"></a><h4>4.9.3.6 GetDLLVersion</h4>
+<pre>[/ProductVersion] filename user_var(high dword output) user_var(low dword output)
 </pre>
 
 <p>Gets the version information from the DLL (or any other executable containing version information) in &quot;filename&quot;. Sets the user output variables with the high and low dwords of version information on success; on failure the outputs are empty and the error flag is set. The following example reads the DLL version and copies a human readable version of it into $0:</p>
@@ -1868,22 +1893,22 @@ IntOp $R4 $R1 / 0x00010000
 IntOp $R5 $R1 &amp; 0x0000FFFF
 StrCpy $0 &quot;$R2.$R3.$R4.$R5&quot;
 </pre>
-<a name="getdllversionlocal"></a><h4>4.9.3.6 GetDLLVersionLocal</h4>
-<pre>localfilename user_var(high dword output) user_var(low dword output)
+<a name="getdllversionlocal"></a><h4>4.9.3.7 GetDLLVersionLocal</h4>
+<pre>[/ProductVersion] localfilename user_var(high dword output) user_var(low dword output)
 </pre>
 
 <p>This is similar to <a href="Chapter4.html#getdllversion">GetDLLVersion</a>, only it acts on the system building the installer (it actually compiles into two <a href="Chapter4.html#StrCpy">StrCpy</a> commands). Sets the two output variables with the DLL version information of the DLL on the build system. Use <a href="Chapter5.html#ppgetdllversion">!getdllversion</a> if you need to use the values with <a href="Chapter4.html#viproductversion">VIProductVersion</a>.</p>
-<a name="getfiletime"></a><h4>4.9.3.7 GetFileTime</h4>
+<a name="getfiletime"></a><h4>4.9.3.8 GetFileTime</h4>
 <pre>filename user_var(high dword output) user_var(low dword output)
 </pre>
 
 <p>Gets the last write time of &quot;filename&quot;. Sets the user output variables with the high and low dwords of the FILETIME timestamp on success; on failure the outputs are empty and the error flag is set.</p>
-<a name="getfiletimelocal"></a><h4>4.9.3.8 GetFileTimeLocal</h4>
+<a name="getfiletimelocal"></a><h4>4.9.3.9 GetFileTimeLocal</h4>
 <pre>localfilename user_var(high dword output) user_var(low dword output)
 </pre>
 
 <p>This is similar to <a href="Chapter4.html#getfiletime">GetFileTime</a>, only it acts on the system building the installer (it actually compiles into two <a href="Chapter4.html#StrCpy">StrCpy</a> commands). Sets the two output variables with the file timestamp of the file on the build system.</p>
-<a name="getknownfolderpath"></a><h4>4.9.3.9 GetKnownFolderPath</h4>
+<a name="getknownfolderpath"></a><h4>4.9.3.10 GetKnownFolderPath</h4>
 <pre>user_var(output) knownfolderid
 </pre>
 
@@ -1900,7 +1925,7 @@ ${If} $InstDir == &quot;&quot;
 ${EndIf}
 FunctionEnd
 </pre>
-<a name="getfullpathname"></a><h4>4.9.3.10 GetFullPathName</h4>
+<a name="getfullpathname"></a><h4>4.9.3.11 GetFullPathName</h4>
 <pre>[/SHORT] user_var(output) path_or_file
 </pre>
 
@@ -1918,7 +1943,7 @@ StrCmp $2 error +2
 StrCpy $0 $1
 DetailPrint $0 # will print C:\Program Files\NSIS, where supported
 </pre>
-<a name="gettempfilename"></a><h4>4.9.3.11 GetTempFileName</h4>
+<a name="gettempfilename"></a><h4>4.9.3.12 GetTempFileName</h4>
 <pre>user_var(output) [base_dir]
 </pre>
 
@@ -1928,21 +1953,21 @@ File /oname=$0 something.dat
 # do something with something.dat
 Delete $0
 </pre>
-<a name="searchpath"></a><h4>4.9.3.12 SearchPath</h4>
+<a name="searchpath"></a><h4>4.9.3.13 SearchPath</h4>
 <pre>user_var(output) filename
 </pre>
 
 <p>Assign to the user variable $x, the full path of the file named by the second parameter. The error flag will be set and $x will be empty if the file cannot be found. Uses <a href="http://msdn.microsoft.com/en-us/library/aa365527">SearchPath()</a> to search the system paths for the file.</p>
-<a name="setfileattributes"></a><h4>4.9.3.13 SetFileAttributes</h4>
+<a name="setfileattributes"></a><h4>4.9.3.14 SetFileAttributes</h4>
 <pre>filename attribute1|attribute2|...
 </pre>
 
 <p>Sets the file attributes of 'filename'. Valid attributes can be combined with | and are:</p>
 <ul>
-<li><em>NORMAL</em> or <em>FILE_ATTRIBUTE_NORMAL</em> (you can use 0 to abbreviate this)</li><li><em>ARCHIVE</em> or <em>FILE_ATTRIBUTE_ARCHIVE</em></li><li><em>HIDDEN</em> or <em>FILE_ATTRIBUTE_HIDDEN</em></li><li><em>OFFLINE</em> or <em>FILE_ATTRIBUTE_OFFLINE</em></li><li><em>READONLY</em> or <em>FILE_ATTRIBUTE_READONLY</em></li><li><em>SYSTEM</em> or <em>FILE_ATTRIBUTE_SYSTEM</em></li><li><em>TEMPORARY</em> or <em>FILE_ATTRIBUTE_TEMPORARY</em></li></ul>
+<li><em>NORMAL</em> or <em>FILE_ATTRIBUTE_NORMAL</em> (you can use 0 to abbreviate this)</li><li><em>ARCHIVE</em> or <em>FILE_ATTRIBUTE_ARCHIVE</em></li><li><em>HIDDEN</em> or <em>FILE_ATTRIBUTE_HIDDEN</em></li><li><em>OFFLINE</em> or <em>FILE_ATTRIBUTE_OFFLINE</em></li><li><em>READONLY</em> or <em>FILE_ATTRIBUTE_READONLY</em></li><li><em>SYSTEM</em> or <em>FILE_ATTRIBUTE_SYSTEM</em></li><li><em>TEMPORARY</em> or <em>FILE_ATTRIBUTE_TEMPORARY</em></li><li><em>NOTINDEXED</em> or <em>FILE_ATTRIBUTE_NOT_CONTENT_INDEXED</em></li></ul>
 
 <p>The error flag will be set if the file's attributes cannot be set (i.e. the file doesn't exist, or you don't have the right permissions). You can only set attributes. It's not possible to unset them. If you want to remove an attribute use NORMAL. This way all attributes are erased. This command doesn't support wildcards.</p>
-<a name="regdll"></a><h4>4.9.3.14 RegDLL</h4>
+<a name="regdll"></a><h4>4.9.3.15 RegDLL</h4>
 <pre>dllfile [entrypoint_name]
 </pre>
 
@@ -1952,7 +1977,7 @@ Delete $0
 <pre> SetOutPath $INSTDIR
  RegDLL $INSTDIR\foo.dll
 </pre>
-<a name="unregdll"></a><h4>4.9.3.15 UnRegDLL</h4>
+<a name="unregdll"></a><h4>4.9.3.16 UnRegDLL</h4>
 <pre>dllfile
 </pre>
 
@@ -2118,7 +2143,7 @@ noreboot:
 
 <p>Checks if active language is a RTL language.</p>
 
-<p><div class="wb"> <b>Warning:</b> Do not call this in [un].onInit because the language file has not been fully initialized. </div></p>
+<p><div class="wb"> <strong>Warning:</strong> Do not call this in [un].onInit because the language file has not been fully initialized. </div></p>
 <a name="intcmp"></a><h4>4.9.4.15 IntCmp</h4>
 <pre>val1 val2 jump_if_equal [jump_if_val1_less] [jump_if_val1_more]
 </pre>
@@ -2256,7 +2281,7 @@ FileClose $0
 
 <p>Reads a string (ANSI characters) from a file opened with <a href="Chapter4.html#FileOpen">FileOpen</a>. The string is read until either a newline (or carriage return newline pair) occurs, or until a null byte is read, or until maxlen is met (if specified). By default, strings are limited to 1024 characters (a special build with larger NSIS_MAX_STRLEN can be compiled or downloaded). If the end of file is reached and no more data is available, the output string will be empty and the error flag will be set.</p>
 
-<p><div class="wb"> <b>Unicode: </b> DBCS text is supported but conversion output is limited to UCS-2/BMP, surrogate pairs are not supported. The system default ANSI codepage (ACP) is used during the conversion. </div></p>
+<p><div class="wb"> <strong>Unicode:</strong> DBCS text is supported but conversion output is limited to UCS-2/BMP, surrogate pairs are not supported. The system default ANSI codepage (ACP) is used during the conversion. </div></p>
 <pre>ClearErrors
 FileOpen $0 $INSTDIR\file.dat r
 IfErrors done
@@ -2467,8 +2492,10 @@ File /oname=$PLUGINSDIR\image.bmp image.bmp
 <pre>IfRebootFlag 0 +2
   SetErrorLevel 4
 </pre>
+
+<p><div class="wb"> <strong>Warning:</strong> -1 is reserved for internal use. Negative numbers should be avoided for compatibility with batch scripts. </div></p>
 <a name="setshellvarcontext"></a><h4>4.9.7.6 SetShellVarContext</h4>
-<pre><b>current</b>|all
+<pre><b>current</b>|all|lastused
 </pre>
 
 <p>Sets the context of $SMPROGRAMS and other <a href="Chapter4.html#varconstant">shell folders</a>. If set to 'current' (the default), the current user's shell folders are used. If set to 'all', the 'all users' shell folder is used. The all users folder may not be supported on all OSes. If the all users folder is not found, the current user folder will be used. Please take into consideration that a &quot;normal user&quot; has no rights to write in the all users area. Only admins have full access rights to the all users area. You can check this by using the UserInfo plug-in. See Contrib\UserInfo\UserInfo.nsi for an example.</p>
@@ -2511,6 +2538,8 @@ StrCpy $0 &quot;$0$0&quot; # = &quot;rinrin&quot;
 <pre>StrLen $0 &quot;123456&quot; # = 6
 </pre>
 <a name="stackinst"></a><h3>4.9.9 Stack Support</h3>
+
+<p>The stack is a temporary storage area useful for saving the state of registers/variables and for communicating with functions and plug-ins. See <a href="https://en.wikipedia.org/wiki/Stack_(abstract_data_type)">Wikipedia</a> for a general introduction to stacks.</p>
 <a name="Exch"></a><h4>4.9.9.1 Exch</h4>
 <pre>[user_var | stack_index]
 </pre>
@@ -2751,7 +2780,7 @@ FunctionEnd
 <pre>inst_type_idx
 </pre>
 
-<p>Sets the current <a href="Chapter4.html#ainsttype">InstType</a>. inst_type_idx should be between 0 and 31. The error flag is <b>not</b> set if an out of range <a href="Chapter4.html#ainsttype">InstType</a> was used.</p>
+<p>Sets the current <a href="Chapter4.html#ainsttype">InstType</a>. inst_type_idx should be between 0 and 31. The error flag is <strong>not</strong> set if an out of range <a href="Chapter4.html#ainsttype">InstType</a> was used.</p>
 <a name="sgetcurinsttype"></a><h4>4.9.13.10 GetCurInstType</h4>
 <pre>user_var
 </pre>
@@ -2917,7 +2946,7 @@ SetCtlColors $0 SYSCLR:23 SYSCLR:24 ; COLOR_INFOTEXT on COLOR_INFOBK
 FunctionEnd
 </pre>
 
-<p><div class="wb"> <b>Warning:</b> Setting the background color of check boxes to <code>transparent</code> may not function properly when using <a href="Chapter4.html#axpstyle"><code>XPStyle</code></a><code> on</code>. The background may be completely black instead of transparent when using certain Windows themes. The text color might also be ignored when Visual Styles are enabled. </div></p>
+<p><div class="wb"> <strong>Warning:</strong> Setting the background color of check boxes to <code>transparent</code> may not function properly when using <a href="Chapter4.html#axpstyle"><code>XPStyle</code></a><code> on</code>. The background may be completely black instead of transparent when using certain Windows themes. The text color might also be ignored when Visual Styles are enabled. </div></p>
 <a name="setsilent"></a><h4>4.9.14.17 SetSilent</h4>
 <pre>silent | normal
 </pre>
@@ -3059,11 +3088,4 @@ FunctionEnd
 
 <p>If your installer/uninstaller requires a lot of information and you want it to be able to be silent, you should allow the user to pass on a path to an answers file. This would be much more comfortable than writing all of the information on the command line.</p>
 <p><a href='Chapter3.html'>Previous</a> | <a href='Contents.html'>Contents</a> | <a href='Chapter5.html'>Next</a></p>
-
-<hr />
-
-<address>
-</address>
-</body>
-
-</html>
+</body></html>

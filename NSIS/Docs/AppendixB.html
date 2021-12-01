@@ -1,13 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns='http://www.w3.org/1999/xhtml'>
-
-<head>
-<title>DLL/TLB Library Setup</title>
-<meta name="generator" content="Halibut v1.0 (NSIS Custom Build, SVN:r6192) xhtml-backend" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>DLL/TLB Library Setup</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="generator" content="Halibut v1.0 (NSIS Custom Build, SVN:r7318) xhtml-backend" />
 <link rel="stylesheet" href="style.css" type='text/css' />
 </head>
-
 <body>
 <p><a href='AppendixA.html'>Previous</a> | <a href='Contents.html'>Contents</a> | <a href='AppendixC.html'>Next</a></p>
 <ul>
@@ -104,7 +100,7 @@
 <p><a href="Chapter5.html#define">Define</a> any of the following before inserting a InstallLib macro to modify its behavior as specified.</p>
 <a name="B.2.3.1"></a><h4>B.2.3.1 LIBRARY_X64</h4>
 <ul>
-<li>Installs a DLL built for Windows x64.</li><li><b>Warning:</b> This resets <a href="Chapter4.html#setregview">SetRegView</a> and file system redirection.</li></ul>
+<li>Installs a DLL built for Windows x64.</li><li><strong>Warning:</strong> This resets <a href="Chapter4.html#setregview">SetRegView</a> and file system redirection.</li></ul>
 <a name="B.2.3.2"></a><h4>B.2.3.2 LIBRARY_SHELL_EXTENSION</h4>
 <ul>
 <li>Define this before inserting InstallLib macro to call SHChangeNotify with SHCNE_ASSOCCHANGED after registration.</li><li>Use this to refresh the shell when installing a shell extension or when changing file associations.</li></ul>
@@ -119,7 +115,7 @@
 <li>Define this before inserting InstallLib macro to overwrite the file even if the version is the same as the existing file.</li></ul>
 <a name="library_install_notes"></a><h3>B.2.4 Notes</h3>
 <ul>
-<li>If you need to support Windows 9x/ME, you can only use short filenames (8.3).</li><li><b>Warning:</b> Always use redistributable files when deploying DLLs, never copy files from your system directory!</li></ul>
+<li>If you need to support Windows 9x/ME, you can only use short filenames (8.3).</li><li><strong>Warning:</strong> Always use redistributable files when deploying DLLs, never copy files from your system directory!</li></ul>
 <a name="library_install_examples"></a><h3>B.2.5 Example</h3>
 <a name="B.2.5.1"></a><h4>B.2.5.1 Unshared DLL</h4>
 <pre> !insertmacro InstallLib REGDLL NOTSHARED REBOOT_NOTPROTECTED dllname.dll $SYSDIR\dllname.dll $SYSDIR
@@ -186,7 +182,7 @@
 <p><a href="Chapter5.html#define">Define</a> any of the following before inserting a UnInstallLib macro to modify its behavior as specified.</p>
 <a name="B.3.3.1"></a><h4>B.3.3.1 LIBRARY_X64</h4>
 <ul>
-<li>Uninstalls a DLL built for Windows x64.</li><li><b>Warning:</b> This resets <a href="Chapter4.html#setregview">SetRegView</a> and file system redirection.</li></ul>
+<li>Uninstalls a DLL built for Windows x64.</li><li><strong>Warning:</strong> This resets <a href="Chapter4.html#setregview">SetRegView</a> and file system redirection.</li></ul>
 <a name="B.3.3.2"></a><h4>B.3.3.2 LIBRARY_SHELL_EXTENSION</h4>
 <ul>
 <li>Define this before inserting UninstallLib macro to call SHChangeNotify with SHCNE_ASSOCCHANGED after unregistration. Use this to refresh the shell when uninstalling a shell extension or when changing file associations.</li></ul>
@@ -225,11 +221,4 @@
 <ul>
 <li>You may have to install additional files for such Visual Basic application to work, such as OCX files for user interface controls.</li><li>Installation of the run-time files requires Administrator or Power User privileges. Use the Multi-User header file to verify whether these privileges are available.</li><li>Add a Modern UI finish page or another check (see <a href="Chapter4.html#ifrebootflag">IfRebootFlag</a>) to allow the user to restart the computer when necessary.</li></ul>
 <p><a href='AppendixA.html'>Previous</a> | <a href='Contents.html'>Contents</a> | <a href='AppendixC.html'>Next</a></p>
-
-<hr />
-
-<address>
-</address>
-</body>
-
-</html>
+</body></html>

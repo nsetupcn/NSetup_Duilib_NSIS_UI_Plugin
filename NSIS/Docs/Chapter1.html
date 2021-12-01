@@ -1,13 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns='http://www.w3.org/1999/xhtml'>
-
-<head>
-<title>Introduction to NSIS</title>
-<meta name="generator" content="Halibut v1.0 (NSIS Custom Build, SVN:r6192) xhtml-backend" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Introduction to NSIS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="generator" content="Halibut v1.0 (NSIS Custom Build, SVN:r7318) xhtml-backend" />
 <link rel="stylesheet" href="style.css" type='text/css' />
 </head>
-
 <body>
 <p>Previous | <a href='Contents.html'>Contents</a> | <a href='Chapter2.html'>Next</a></p>
 <ul>
@@ -25,8 +21,6 @@
 <p>The installer is your application's first impression. Slow or unsuccessful software installations is one of the most irritating computer problems. A quick and user friendly installer is therefore an essential part of your software product. NSIS (Nullsoft Scriptable Install System) is a tool that allows programmers to create such installers for Windows. It is released under an open source license and is <a href="AppendixI.html#license">completely free for any use</a>.</p>
 
 <p>NSIS creates installers that are capable of installing, uninstalling, setting system settings, extracting files, etc. Because it's based on script files you can fully control every part of your installer. The scripting language supports variables, functions and string manipulation, just like a normal programming language - but designed for the creation of installers. Even with all these features, NSIS is still the smallest installer system available. With the default options, it has an overhead of only 34 KB.</p>
-
-<p>With NSIS 3 you can also create <a href="Chapter1.html#intro-unicode">Unicode installers</a>, targeting all the languages supported by the OS without display issues.</p>
 <a name="intro-features"></a><h2>1.2 Main Features</h2>
 
 <p><b>Small overhead size</b></p>
@@ -43,11 +37,11 @@
 
 <p><b>Script based</b></p>
 
-<p>Unlike other systems that can only generate installers based on a list of files and registry keys, NSIS has a powerful scripting language. This script language is designed for installers and has commands that help you to perform many installation tasks. You can easily add custom logic and handle different upgrades, version checks and more. On the <a href="https://nsis.sourceforge.io/wiki/">NSIS Wiki</a> you can find a lot more.</p>
+<p>Unlike other systems that can only generate installers based on a list of files and registry keys, NSIS has a powerful <a href="Chapter2.html#tutscriptfiles">scripting language</a>. This script language is designed for installers and has commands that help you to perform many installation tasks. You can easily add custom logic and handle different upgrades, version checks and more. On the <a href="https://nsis.sourceforge.io/wiki/">NSIS Wiki</a> you can find a lot more.</p>
 
 <p><b>Multiple languages in one installer</b></p>
 
-<p>One installer can support multiple interface languages. More than 60 translations are already included and you can also create your own language files. RTL (right-to-left) languages such as Arabic and Hebrew are fully supported. Creating a Unicode native installer is also possible for even more supported languages.</p>
+<p>One installer can support multiple interface languages. More than 60 translations are already included and you can also create your own language files. RTL (right-to-left) languages such as Arabic and Hebrew are fully supported. Creating a <a href="Chapter1.html#intro-unicode">Unicode native installer</a> is also possible, targeting all the languages supported by the OS without display issues.</p>
 
 <p><b>Many features and checks for the target system</b></p>
 
@@ -89,11 +83,4 @@
 
 <p>When building a Unicode installer NSIS variables can hold Unicode characters (0001-FFFF). There should be no need to modify your existing scripts. If you want to read/write Unicode files, specific instructions have been added to read/write UTF-16LE strings from/to disk.</p>
 <p>Previous | <a href='Contents.html'>Contents</a> | <a href='Chapter2.html'>Next</a></p>
-
-<hr />
-
-<address>
-</address>
-</body>
-
-</html>
+</body></html>

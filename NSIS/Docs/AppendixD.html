@@ -1,13 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns='http://www.w3.org/1999/xhtml'>
-
-<head>
-<title>Useful Information</title>
-<meta name="generator" content="Halibut v1.0 (NSIS Custom Build, SVN:r6192) xhtml-backend" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Useful Information</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="generator" content="Halibut v1.0 (NSIS Custom Build, SVN:r7318) xhtml-backend" />
 <link rel="stylesheet" href="style.css" type='text/css' />
 </head>
-
 <body>
 <p><a href='AppendixC.html'>Previous</a> | <a href='Contents.html'>Contents</a> | <a href='AppendixE.html'>Next</a></p>
 <ul>
@@ -40,20 +36,22 @@ DetailPrint &quot;uninstaller set error level $0&quot;
 <p>If you don't do this, you'll only be able to know if the uninstaller failed copying itself to the temporary directory.</p>
 <a name="useful_add_uninst_infos"></a><h2>D.2 Add uninstall information to Add/Remove Programs</h2>
 
-<p>Create a key with your product name under HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall to add entries to the &quot;Add/Remove Programs&quot; section in the Control Panel. For Windows NT (NT4/2000/XP), it's also possible to create the key in the HKCU hive, so it will only appear for the current user. There are several values you can write to key to give information about your application and the uninstaller. Write a value using the <a href="Chapter4.html#writeregstr">WriteRegStr</a> command (for strings) or <a href="Chapter4.html#writeregdword">WriteRegDWORD</a> command (for DWORD values).</p>
+<p>Create a key with your product name (or a GUID) under HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall to add entries to the &quot;Add/Remove Programs&quot; section in the Control Panel. For Windows NT (NT4/2000/XP and later), it's also possible to create the key in the HKCU hive, so it will only appear for the current user. There are several values you can write to key to give information about your application and the uninstaller. Write a value using the <a href="Chapter4.html#writeregstr">WriteRegStr</a> command (for strings) or <a href="Chapter4.html#writeregdword">WriteRegDWORD</a> command (for DWORD values).</p>
 
 <p>Example:</p>
 <pre>WriteRegStr HKLM &quot;Software\Microsoft\Windows\CurrentVersion\Uninstall\MyProduct&quot; &quot;DisplayName&quot; &quot;Application Name&quot;
 WriteRegStr HKLM &quot;Software\Microsoft\Windows\CurrentVersion\Uninstall\MyProduct&quot; &quot;UninstallString&quot; '&quot;$INSTDIR\uninst.exe&quot;'
 </pre>
 
-<p><b>Required values</b></p>
+<p><strong>Required values:</strong></p>
 
-<p><em>DisplayName</em> (string) - Name of the application <br> <em>UninstallString</em> (string) - Path and filename of the uninstaller. You should <b>always</b> quote the path.</p>
+<p><em>DisplayName</em> (string) - Name of the application <br> <em>UninstallString</em> (string) - Path and filename of the uninstaller. You should <strong>always</strong> quote the path.</p>
 
-<p><b>Optional values</b></p>
+<p><strong>Optional values:</strong></p>
 
 <p>Some of the following values will not be used by older Windows versions.</p>
+
+<p><em>QuietUninstallString</em> (string) - Quiet uninstall command (<code>&quot;$INSTDIR\uninst.exe&quot; /S</code>)</p>
 
 <p><em>InstallLocation</em> (string) - Installation directory ($INSTDIR) <br> <em>DisplayIcon</em> (string) - Path, filename and index of the icon that will be displayed next to your application name</p>
 
@@ -338,11 +336,4 @@ SectionEnd
 
 <p>There are two macros that can help you write scripts that work for both Unicode and ANSI installers. To figure out if the script is being compiled to generate a Unicode installer, use !ifdef to check for NSIS_UNICODE. To see what the size of a character is, use ${NSIS_CHAR_SIZE}. It will be 1 for ANSI and 2 for Unicode installers.</p>
 <p><a href='AppendixC.html'>Previous</a> | <a href='Contents.html'>Contents</a> | <a href='AppendixE.html'>Next</a></p>
-
-<hr />
-
-<address>
-</address>
-</body>
-
-</html>
+</body></html>

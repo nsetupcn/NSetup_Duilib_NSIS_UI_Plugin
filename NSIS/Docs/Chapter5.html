@@ -1,13 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns='http://www.w3.org/1999/xhtml'>
-
-<head>
-<title>Compile Time Commands</title>
-<meta name="generator" content="Halibut v1.0 (NSIS Custom Build, SVN:r6192) xhtml-backend" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Compile Time Commands</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="generator" content="Halibut v1.0 (NSIS Custom Build, SVN:r7318) xhtml-backend" />
 <link rel="stylesheet" href="style.css" type='text/css' />
 </head>
-
 <body>
 <p><a href='Chapter4.html'>Previous</a> | <a href='Contents.html'>Contents</a> | <a href='AppendixA.html'>Next</a></p>
 <ul>
@@ -27,6 +23,7 @@
 <li><a href="Chapter5.html#makensis">!makensis</a></li>
 <li><a href="Chapter5.html#packhdr">!packhdr</a></li>
 <li><a href="Chapter5.html#finalize">!finalize</a></li>
+<li><a href="Chapter5.html#uninstfinalize">!uninstfinalize</a></li>
 <li><a href="Chapter5.html#system">!system</a></li>
 <li><a href="Chapter5.html#tempfile">!tempfile</a></li>
 <li><a href="Chapter5.html#ppgetdllversion">!getdllversion</a></li>
@@ -180,10 +177,17 @@ MyPlugin::SomeFunction
 <pre>command [compare comparevalue]
 </pre>
 
-<p>This option will execute 'command' using a call to system() after the output EXE has been generated. You can typically use it to sign (Authenticode) your installer. If 'command' contains a '%1' it will be replaced by the executables filename.</p>
-<pre>!finalize 'sign.bat &quot;%1&quot; &quot;Product Installer&quot; http://example.com'
+<p>This option will execute 'command' using a call to system() after the installer EXE has been generated. You can typically use it to sign (Authenticode) your installer. If 'command' contains a '%1' it will be replaced by the executables filename.</p>
+<pre>!finalize 'sign.bat &quot;%1&quot; &quot;MyProduct Installer&quot; http://example.com'
 </pre>
-<a name="system"></a><h3>5.1.13 !system</h3>
+<a name="uninstfinalize"></a><h3>5.1.13 !uninstfinalize</h3>
+<pre>command [compare comparevalue]
+</pre>
+
+<p>This option will execute 'command' using a call to system() after the uninstaller EXE has been generated. You can typically use it to sign (Authenticode) your uninstaller. If 'command' contains a '%1' it will be replaced by the executables filename.</p>
+<pre>!uninstfinalize 'sign.bat &quot;%1&quot; &quot;MyProduct Installer&quot; http://example.com'
+</pre>
+<a name="system"></a><h3>5.1.14 !system</h3>
 <pre>command [compare comparevalue | symbol]
 </pre>
 
@@ -194,8 +198,11 @@ MyPlugin::SomeFunction
 !ifdef something
   !echo &quot;something is defined&quot;
 !endif
+!system 'attrib +H Secret.txt' = 0
+!system 'ping localhost' ERRLVL
+!echo &quot;Ping returned ${ERRLVL}&quot;
 </pre>
-<a name="tempfile"></a><h3>5.1.14 !tempfile</h3>
+<a name="tempfile"></a><h3>5.1.15 !tempfile</h3>
 <pre>symbol
 </pre>
 
@@ -211,15 +218,15 @@ File /oname=build.txt &quot;${FILE}&quot;
 !delfile &quot;${FILE}&quot;
 !undef FILE
 </pre>
-<a name="ppgetdllversion"></a><h3>5.1.15 !getdllversion</h3>
-<pre>[/noerrors] [/packed] localfilename define_basename
+<a name="ppgetdllversion"></a><h3>5.1.16 !getdllversion</h3>
+<pre>[/noerrors] [/packed] [/productversion] localfilename define_basename
 </pre>
 
 <p>This is similar to <a href="Chapter4.html#getdllversionlocal">GetDLLVersionLocal</a>, only it stores the version number in defines and can therefore be used anywhere, not just inside functions and sections. /packed returns the information in two DWORDs.</p>
 <pre>!getdllversion &quot;$%WINDIR%\Explorer.exe&quot; Expv_
 !echo &quot;Explorer.exe version is ${Expv_1}.${Expv_2}.${Expv_3}.${Expv_4}&quot;
 </pre>
-<a name="ppgettlbversion"></a><h3>5.1.16 !gettlbversion</h3>
+<a name="ppgettlbversion"></a><h3>5.1.17 !gettlbversion</h3>
 <pre>[/noerrors] [/packed] localfilename define_basename
 </pre>
 
@@ -227,7 +234,7 @@ File /oname=build.txt &quot;${FILE}&quot;
 <pre>!gettlbversion /packed &quot;$%WINDIR%\System32\stdole32.tlb&quot; TLBVER_
 !echo &quot;${TLBVER_HIGH}.${TLBVER_LOW}&quot;
 </pre>
-<a name="warning"></a><h3>5.1.17 !warning</h3>
+<a name="warning"></a><h3>5.1.18 !warning</h3>
 <pre>[message]
 </pre>
 
@@ -236,7 +243,7 @@ File /oname=build.txt &quot;${FILE}&quot;
   !warning &quot;using dangerous stuff&quot;
 !endif
 </pre>
-<a name="pragma"></a><h3>5.1.18 !pragma</h3>
+<a name="pragma"></a><h3>5.1.19 !pragma</h3>
 <pre>warning &lt;enable|disable|default|error|warning&gt; &lt;code|all&gt;
 warning &lt;push|pop&gt;
 </pre>
@@ -245,7 +252,7 @@ warning &lt;push|pop&gt;
 <pre>!pragma warning disable 9000 ; Disable warning about using &quot;Setup.exe&quot; as the name
 OutFile &quot;Setup.exe&quot;
 </pre>
-<a name="verbose"></a><h3>5.1.19 !verbose</h3>
+<a name="verbose"></a><h3>5.1.20 !verbose</h3>
 <pre>level | push | pop
 </pre>
 
@@ -311,13 +318,13 @@ OutFile &quot;Setup.exe&quot;
 
 <p>Defined in the global scope.</p>
 <pre>Section test
-  !ifdef ${__GLOBAL__}
+  !ifdef __GLOBAL__
     !error &quot;this shouldn't be here!&quot;
   !endif
 SectionEnd
 
 PageEx instfiles
-  !ifdef ${__GLOBAL__}
+  !ifdef __GLOBAL__
     !error &quot;this shouldn't be here!&quot;
   !endif
 PageExEnd
@@ -574,11 +581,4 @@ OutFile installer.exe
 !searchreplace blah &quot;i love ponies&quot; &quot;love&quot; &quot;like&quot;
 </pre>
 <p><a href='Chapter4.html'>Previous</a> | <a href='Contents.html'>Contents</a> | <a href='AppendixA.html'>Next</a></p>
-
-<hr />
-
-<address>
-</address>
-</body>
-
-</html>
+</body></html>
