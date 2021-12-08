@@ -36,5 +36,6 @@ LicenseKey "${PRODUCT_KEY}"
 
 InstallDir "$APPDATA\${PRODUCT_NAME_EN}"
 InstallDirRegKey HKLM "${PRODUCT_UNINST_KEY}" "UninstallString"
-;文件版本声明-结束
+
+OutFileMode auto
 
