@@ -4,6 +4,7 @@
 */
 ;自定义宏
 !include "nsInstallSettings.nsh"
+!include "nsUnInstallFiles.nsh"
 ;多语言 
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "SimpChinese"
@@ -38,6 +39,15 @@ Function UninstallProgressExt
 FunctionEnd
 ;开始卸载扩展操作
 Function UnInstallPageFuncExt
+FunctionEnd
+;删除目录文件
+Function UninstallAppFuncExt
+    Delete "$varOldFileDir\uninst.exe"
+    Delete "$varOldFileDir\version.ini"
+    Delete "$varOldFileDir\install.log"
+    ${If} ${PRODUCT_UNINSTALL_RMDIR_TYPE} == 0
+        RMDir /r /REBOOTOK "$varOldFileDir"
+    ${EndIf}
 FunctionEnd
 ;卸载完成阶段扩展操作
 Function UnInstallCompleteExt

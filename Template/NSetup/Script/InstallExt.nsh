@@ -9,6 +9,7 @@
 !include "nsInstallDependSettings.nsh"
 !include "nsCustomVariables.nsh"
 !include "nsAutoUpdate.nsh"
+!include "nsInstallFiles.nsh"
 
 ;多语言 
 !insertmacro MUI_LANGUAGE "English"
@@ -94,9 +95,7 @@ FunctionEnd
 ;安装释放文件后
 Function LaterInstallFiles
     ${If} ${PRODUCT_INSTALL_MODEL_TYPE} != 3
-        SetOutPath "$INSTDIR"
         SetOverwrite try
-        File /r "..\..\..\Temp\Temp\*.*"
     ${EndIf}
 FunctionEnd
 ;扩展Sectipn
