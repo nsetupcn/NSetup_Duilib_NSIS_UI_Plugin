@@ -226,8 +226,7 @@ Section UninstallApp
     Delete "$SMPROGRAMS\${PRODUCT_NAME_EN}\${PRODUCT_NAME}.lnk"
     Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
     RMDir /r /REBOOTOK  "$SMPROGRAMS\${PRODUCT_NAME_EN}"
-    IfFileExists "$varOldFileDir\*" 0 +1
-    RMDir /r /REBOOTOK "$varOldFileDir" 
+    Call UninstallAppFuncExt
     DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
     DeleteRegKey HKCU "${PRODUCT_REG_KEY}"
     DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
