@@ -18,7 +18,8 @@
             <Include source="zh-CN/7Step.xml" />
             <Include source="zh-CN/8Step.xml" />
             <Include source="zh-CN/9Step.xml" />
-			<Include source="zh-CN/10Step.xml" />
+            <Include source="zh-CN/10Step.xml" />
+            <Include source="zh-CN/11Step.xml" />
         </TabLayout>
         <TabLayout name="BottomWizardTab" bkcolor="#FFC1DDFF">
             <Include source="zh-CN/1StepBottom.xml" />
@@ -30,7 +31,8 @@
             <Include source="zh-CN/7StepBottom.xml" />
             <Include source="zh-CN/8StepBottom.xml" />
             <Include source="zh-CN/9StepBottom.xml" />
-			<Include source="zh-CN/10StepBottom.xml" />
+            <Include source="zh-CN/10StepBottom.xml" />
+            <Include source="zh-CN/11StepBottom.xml" />
         </TabLayout>
     </VerticalLayout>
 </Window>
