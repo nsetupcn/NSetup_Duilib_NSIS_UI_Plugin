@@ -39,3 +39,4 @@
 !define STEP_NET_ERROR 7                    ;网络连接错误页面
 !define STEP_UPDATE_ERROR 8                 ;升级失败页面
 !define STEP_REPLACE_FILES_ERROR 9          ;检查替换文件失败页面
+!define STEP_UNZIP_FILES_ERROR 10           ;检查解压文件失败页面

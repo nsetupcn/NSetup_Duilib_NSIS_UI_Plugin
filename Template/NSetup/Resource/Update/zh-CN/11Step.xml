@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Part>
+    <VerticalLayout name="4step">
+        <Control height="180"/>
+        <Label text="文件解压失败" align="center" textcolor="#FF000000" padding="0,0,0,0" font="3"/>
+        <Label text="请尝试关闭相关杀毒防护软件，然后重试" align="center" textcolor="#FF000000" padding="0,0,0,0" font="2"/>
+        <Control />
+    </VerticalLayout>
+</Part>
