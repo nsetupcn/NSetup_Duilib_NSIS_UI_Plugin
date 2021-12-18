@@ -737,13 +737,8 @@ Function DoUpdateFunc
     nsAutoUpdate::DownloadUpdateFileListIni
 FunctionEnd
 
-Function UnzipFiles
-    nsAutoUpdate::UnzipNeedUpdateFiles
-FunctionEnd
-
 Function DoUnzipFunc
-    GetFunctionAddress $0 UnzipFiles
-    BgWorker::CallAndWait
+    nsAutoUpdate::UnzipNeedUpdateFiles
 FunctionEnd
 
 Function DoReplaceFunc
