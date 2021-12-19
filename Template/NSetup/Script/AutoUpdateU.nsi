@@ -32,6 +32,7 @@ Var IsAutoDown
 Var IsRetry
 
 Var varShowInstTimerId
+Var varUnzipTimerId
 Var varCurrentStep
 Var varCurrentVersion
 Var varLocalVersion
@@ -737,8 +738,19 @@ Function DoUpdateFunc
     nsAutoUpdate::DownloadUpdateFileListIni
 FunctionEnd
 
-Function DoUnzipFunc
+Function UnzipFiles
     nsAutoUpdate::UnzipNeedUpdateFiles
+FunctionEnd
+
+Function AsyncUnzipFiles
+    nsSkinEngine::NSISKillTimer $varUnzipTimerId
+    GetFunctionAddress $0 UnzipFiles
+    BgWorker::CallAndWait
+FunctionEnd
+
+Function DoUnzipFunc
+    GetFunctionAddress $varUnzipTimerId AsyncUnzipFiles
+    nsSkinEngine::NSISCreatTimer $varUnzipTimerId 1
 FunctionEnd
 
 Function DoReplaceFunc
