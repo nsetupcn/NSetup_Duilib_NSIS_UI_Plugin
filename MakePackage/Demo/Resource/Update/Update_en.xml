@@ -18,7 +18,8 @@
             <Include source="en/7Step.xml" />
             <Include source="en/8Step.xml" />
             <Include source="en/9Step.xml" />
-			<Include source="en/10Step.xml" />
+            <Include source="en/10Step.xml" />
+            <Include source="en/11Step.xml" />
         </TabLayout>
         <TabLayout name="BottomWizardTab" bkcolor="#FFC1DDFF">
             <Include source="en/1StepBottom.xml" />
@@ -30,7 +31,8 @@
             <Include source="en/7StepBottom.xml" />
             <Include source="en/8StepBottom.xml" />
             <Include source="en/9StepBottom.xml" />
-			<Include source="en/10StepBottom.xml" />
+            <Include source="en/10StepBottom.xml" />
+            <Include source="en/11StepBottom.xml" />
         </TabLayout>
     </VerticalLayout>
 </Window>
