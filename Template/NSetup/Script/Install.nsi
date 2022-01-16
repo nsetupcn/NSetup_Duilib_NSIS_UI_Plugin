@@ -153,12 +153,12 @@ Function .onInit
 	StrCpy $INSTDIR $forceInstallPath
   ${ElseIf} $INSTDIR == ""
     ${If} ${PRODUCT_INSTALL_DIR} == 0
-        StrCpy $oldInstallPath "${DEFAULT_DIR}"
+        StrCpy $INSTDIR "${DEFAULT_DIR}"
     ${ElseIf} ${PRODUCT_INSTALL_DIR} == 1
-        StrCpy $oldInstallPath "$PROGRAMFILES\${PRODUCT_NAME_EN}"
+        StrCpy $INSTDIR "$PROGRAMFILES\${PRODUCT_NAME_EN}"
     ${ElseIf} ${PRODUCT_INSTALL_DIR} == 2
         ${GetDrives} "HDD" "FindHDD"
-        StrCpy $oldInstallPath "$R2${PRODUCT_NAME_EN}"
+        StrCpy $INSTDIR "$R2${PRODUCT_NAME_EN}"
     ${ElseIf} ${PRODUCT_INSTALL_DIR} == 3
         ReadEnvStr $R0 SYSTEMDRIVE
         StrCpy $INSTDIR "$R0\${PRODUCT_NAME_EN}"
