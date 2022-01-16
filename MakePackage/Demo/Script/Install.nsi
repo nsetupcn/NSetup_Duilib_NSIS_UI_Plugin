@@ -148,12 +148,10 @@ Function .onInit
     Abort
   ${EndIf}
   
-  ${If} ${PRODUCT_SUPPORT_UPDATE} == 1
-	 StrCpy $rootDir "$INSTDIR\${PRODUCT_VERSION}"
-  ${Else}
-	 StrCpy $rootDir "$INSTDIR"
-  ${EndIf}
-  
+  ReadRegStr $INSTDIR HKCU "${PRODUCT_REG_KEY}" "installDir"
+  ${If} $forceInstallPath != ""
+	StrCpy $INSTDIR $forceInstallPath
+  ${ElseIf} $INSTDIR == ""
     ${If} ${PRODUCT_INSTALL_DIR} == 0
         StrCpy $oldInstallPath "${DEFAULT_DIR}"
     ${ElseIf} ${PRODUCT_INSTALL_DIR} == 1
@@ -161,14 +159,10 @@ Function .onInit
     ${ElseIf} ${PRODUCT_INSTALL_DIR} == 2
         ${GetDrives} "HDD" "FindHDD"
         StrCpy $oldInstallPath "$R2${PRODUCT_NAME_EN}"
+    ${ElseIf} ${PRODUCT_INSTALL_DIR} == 3
+        ReadEnvStr $R0 SYSTEMDRIVE
+        StrCpy $INSTDIR "$R0\${PRODUCT_NAME_EN}"
     ${EndIf}
-	
-  ReadRegStr $INSTDIR HKCU "${PRODUCT_REG_KEY}" "installDir"
-  ${If} $forceInstallPath != ""
-	StrCpy $INSTDIR $forceInstallPath
-  ${ElseIf} $INSTDIR == ""
-    ;初始化安装位置 $APPDATA
-    StrCpy $INSTDIR $oldInstallPath
   ${Else}
     StrCpy $oldInstallPath $INSTDIR
     Call getLocalVersion
@@ -184,6 +178,13 @@ Function .onInit
         ${EndIf}
     ${EndIf}
   ${EndIf}
+  
+  ${If} ${PRODUCT_SUPPORT_UPDATE} == 1
+	 StrCpy $rootDir "$INSTDIR\${PRODUCT_VERSION}"
+  ${Else}
+	 StrCpy $rootDir "$INSTDIR"
+  ${EndIf}
+  
   Call OnInitExt
   ${If} $isSilence == "1"
 	 Call killProgress
@@ -321,7 +322,9 @@ Function InstallProgress
    ${EndIf}
    Call InstallProgressExt
    ${If} $autoInstall == "1"
-    nsProcess::KillProcessByPath "$oldInstallPath/uninst.exe"
+       ${If} $oldInstallPath != ""
+            nsProcess::KillProcessByPath "$oldInstallPath/uninst.exe"
+        ${EndIf}
 	Call FastInstallPageFunc
    ${EndIf}
    
@@ -494,23 +497,25 @@ Function StartInstallFunc
 FunctionEnd
 
 Function killProgress
-	nsProcess::FindProcessByName "${MAIN_APP_NAME}"
-	Pop $R0
-	${If} $R0 == ${FINDPROCESS}
-		${If} $isSilence == "0"
-        ${AndIf} $autoInstall == "0"
-			nsSkinEngine::NSISMessageBox ${MB_OKCANCEL} "" "$(APP_RUNNING_MESSAGE)"
-			Pop $1
-			${If} $1 == ${ON_OK}
-				nsProcess::KillProcessByPath "$oldInstallPath"     ;强制结束进程
-			${Else}
-				nsSkinEngine::NSISExitSkinEngine "false"
-			${EndIf}
-		${Else}
-			nsProcess::KillProcessByPath "$oldInstallPath"     ;强制结束进程
-		${EndIf}
-	${EndIf}
-	nsProcess::KillProcessByName "AutoUpdate.exe"
+    ${If} $oldInstallPath != ""
+        nsProcess::FindProcessByName "${MAIN_APP_NAME}"
+        Pop $R0
+        ${If} $R0 == ${FINDPROCESS}
+            ${If} $isSilence == "0"
+            ${AndIf} $autoInstall == "0"
+                nsSkinEngine::NSISMessageBox ${MB_OKCANCEL} "" "$(APP_RUNNING_MESSAGE)"
+                Pop $1
+                ${If} $1 == ${ON_OK}
+                    nsProcess::KillProcessByPath "$oldInstallPath"     ;强制结束进程
+                ${Else}
+                    nsSkinEngine::NSISExitSkinEngine "false"
+                ${EndIf}
+            ${Else}
+                nsProcess::KillProcessByPath "$oldInstallPath"     ;强制结束进程
+            ${EndIf}
+        ${EndIf}
+        nsProcess::KillProcessByName "AutoUpdate.exe"
+    ${EndIf}
 FunctionEnd
 
 Function InstallShow
@@ -534,18 +539,20 @@ SectionEnd
 
 Section InstallFiles
    Call BeforeInstallFiles
-  ${If} ${PRODUCT_OVERLAY_INSTALL_TYPE} == 1
-    CopyFiles /SILENT "$oldInstallPath/uninst.exe" "$TEMP\uninst.exe"
-    ExecWait '"$TEMP\uninst.exe" /UnInstall $oldInstallPath /S'
-  ${Else}
-        IfFileExists "$INSTDIR\${PRODUCT_VERSION}\*" +7 0
-        ${If} ${PRODUCT_SUPPORT_UPDATE} == 1
-        ${AndIf} $varLocalVersion != ""
-            IfFileExists "$oldInstallPath\$varLocalVersion\*" 0 +4
-            CreateDirectory "$INSTDIR\${PRODUCT_VERSION}"
-            CopyFiles /SILENT "$oldInstallPath\$varLocalVersion\*.*" "$INSTDIR\${PRODUCT_VERSION}"
-            RMDir /r /REBOOTOK "$oldInstallPath\$varLocalVersion"
-        ${EndIf}
+   ${If} $oldInstallPath != ""
+      ${If} ${PRODUCT_OVERLAY_INSTALL_TYPE} == 1
+        CopyFiles /SILENT "$oldInstallPath/uninst.exe" "$TEMP\uninst.exe"
+        ExecWait '"$TEMP\uninst.exe" /UnInstall $oldInstallPath /S'
+      ${Else}
+            IfFileExists "$INSTDIR\${PRODUCT_VERSION}\*" +7 0
+            ${If} ${PRODUCT_SUPPORT_UPDATE} == 1
+            ${AndIf} $varLocalVersion != ""
+                IfFileExists "$oldInstallPath\$varLocalVersion\*" 0 +4
+                CreateDirectory "$INSTDIR\${PRODUCT_VERSION}"
+                CopyFiles /SILENT "$oldInstallPath\$varLocalVersion\*.*" "$INSTDIR\${PRODUCT_VERSION}"
+                RMDir /r /REBOOTOK "$oldInstallPath\$varLocalVersion"
+            ${EndIf}
+      ${EndIf}
   ${EndIf}
   Call LaterInstallFiles
 SectionEnd
@@ -553,6 +560,8 @@ SectionEnd
 Section SectionExt
   Call SectionFuncExt
 SectionEnd
+
+!include "nsInstallFiles.nsh"
 
 Section RegistKeys
 	DeleteRegValue HKCU "${PRODUCT_REG_KEY}" "UpdateOldVersion"
@@ -579,6 +588,11 @@ Section RegistKeys
 	FlushINI "$INSTDIR\version.ini"
     
     Call RegistKeysExt
+    ${If} $oldInstallPath != ""
+        ${If} $oldInstallPath != $INSTDIR
+            RMDir "$oldInstallPath"
+        ${EndIf}
+    ${EndIf}
 SectionEnd
 
 Section CreateShorts

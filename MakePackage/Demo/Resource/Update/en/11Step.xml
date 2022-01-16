@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Part>
+    <VerticalLayout name="4step">
+        <Control height="180"/>
+        <Label text="File unzip failed" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="3"/>
+        <Label text="Please try to close the relevant anti-virus protection software and try again" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="2"/>
+        <Control />
+    </VerticalLayout>
+</Part>

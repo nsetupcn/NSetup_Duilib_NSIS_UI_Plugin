@@ -32,11 +32,13 @@ Var IsAutoDown
 Var IsRetry
 
 Var varShowInstTimerId
+Var varUnzipTimerId
 Var varCurrentStep
 Var varCurrentVersion
 Var varLocalVersion
 Var varCurrentParameters
 Var varUpdateTempVersion
+Var varUpdateTestIndex
 Var varResourceDir
 Var varKipVersion
 
@@ -255,6 +257,24 @@ Function InstallProgress
     nsSkinEngine::NSISOnControlBindNSISScript "CancelRetryReplaceBtn" $0
    ${EndIf}
    
+   nsSkinEngine::NSISFindControl "OkRetryUnzipBtn"
+   Pop $0
+   ${If} $0 == "${NOFIND}"
+    MessageBox MB_OK "Do not have OkRetryUnzipBtn"
+   ${Else}
+    GetFunctionAddress $0 DoRetryUnzipFunc
+    nsSkinEngine::NSISOnControlBindNSISScript "OkRetryUnzipBtn" $0
+   ${EndIf}
+   
+   nsSkinEngine::NSISFindControl "CancelRetryUnzipBtn"
+   Pop $0
+   ${If} $0 == "${NOFIND}"
+    MessageBox MB_OK "Do not have CancelRetryUnzipBtn"
+   ${Else}
+    GetFunctionAddress $0 OnInstallCancelFunc
+    nsSkinEngine::NSISOnControlBindNSISScript "CancelRetryUnzipBtn" $0
+   ${EndIf}
+   
    GetFunctionAddress $varShowInstTimerId InitUpdate
    nsSkinEngine::NSISCreatTimer $varShowInstTimerId 1
    Call InstallProgressExt
@@ -274,6 +294,12 @@ Function InitUpdate
     StrCpy $varCurrentVersion $varUpdateTempVersion
     Goto +2
     StrCpy $varCurrentVersion "$R1"
+    ClearErrors
+    ${GetParameters} $R0 # 获得命令行
+    ${GetOptions} $R0 "/TestIndex" $R1 # 在命令行里查找是否存在/T选项
+    IfErrors 0 +2
+    Goto +2
+    StrCpy $varUpdateTestIndex "$R1"
     ClearErrors
     ${GetParameters} $R0 # 获得命令行
     ${GetOptions} $R0 "/Auto" $R1 # 在命令行里查找是否存在/T选项
@@ -301,7 +327,7 @@ Function InitUpdate
     StrCpy $IsUpdateSelf "0"
     Goto +3
     StrCpy $IsUpdateSelf "1"
-    KillProcDLL::KillProc "${UPDATE_NAME}"
+    nsProcess::KillProcessByPath "$EXEDIR\${UPDATE_NAME}"
     ClearErrors
     ${GetParameters} $R0 # 获得命令行
     ${GetOptions} $R0 "/UpdateOther" $R1 # 在命令行里查找是否存在/T选项
@@ -328,12 +354,12 @@ Function InitUpdate
     Goto +2
     StrCpy $IsRunAs "1"
     ;处理mutex
-    nsUtils::NSISCreateMutex "${PRODUCT_NAME_EN}AutoUpdate"
+    nsUtils::NSISCreateMutex "${PRODUCT_NAME_EN}AutoUpdate$varUpdateTestIndex"
     Pop $R0
     ${If} $R0 == 1
 		${If} $IsRunAs == "0"
 			${If} $IsAuto == "0"
-				nsSkinEngine::NSISMessageBox ${MB_OK} "" "有一个升级已经运行！"
+				nsSkinEngine::NSISMessageBox ${MB_OK} "" "$(RUN_MUTEX_MESSAGE)"
 			${EndIf}
 			nsSkinEngine::NSISExitSkinEngine "false"
 		${EndIf}
@@ -348,9 +374,9 @@ Function InitUpdate
     CreateDirectory "$APPDATA\${PRODUCT_NAME_EN}"
     nsAutoUpdate::SetAppServerSettings "${PRODUCT_UPDATE_ID}" "65B70DE7540C42759156483165E35215" "${PRODUCT_UPDATE_ADDRESS}"
     ${If} $IsUpdateSelf == 0
-    nsAutoUpdate::InitLog "false" "${PRODUCT_NAME_EN}"
+    nsAutoUpdate::InitLog "false" "${PRODUCT_NAME_EN}$varUpdateTestIndex"
     ${Else}
-    nsAutoUpdate::InitLog "true" "${PRODUCT_NAME_EN}"
+    nsAutoUpdate::InitLog "true" "${PRODUCT_NAME_EN}$varUpdateTestIndex"
     ${EndIf}
     nsAutoUpdate::SetAppSettings "${UPDATE_NAME}" "$EXEDIR" "${PRODUCT_NAME_EN}" "${PRODUCT_UPDATE_KEY}"
     GetFunctionAddress $0 UpdateEventChangeCallback 
@@ -547,7 +573,7 @@ Function UpdateEventChangeCallback
     DetailPrint '下载文件'
     ${ElseIf} $varCurrentStep == '${EVENT_DOWNLOAD_FILES_SUCCESS}'
     DetailPrint '下载文件成功'
-    nsAutoUpdate::UnzipNeedUpdateFiles
+    Call DoUnzipFunc
     ${ElseIf} $varCurrentStep == '${EVENT_UNZIP_FILES}'
     DetailPrint '解压文件'
     ${ElseIf} $varCurrentStep == '${EVENT_UNZIP_FILES_SUCCESS}'
@@ -570,7 +596,7 @@ Function UpdateEventChangeCallback
         ${If} $R1 == 1
         DetailPrint '运行${UPDATE_TEMP_NAME}'
         nsSkinEngine::NSISHideSkinEngine
-        Exec '"$EXEDIR\${UPDATE_TEMP_NAME}" /UpdateSelf /UpdateOther $varCurrentParameters /UpdateVersion $varCurrentVersion'
+        Exec '"$EXEDIR\${UPDATE_TEMP_NAME}" /UpdateSelf /UpdateOther $varCurrentParameters /UpdateVersion $varCurrentVersion /TestIndex $varUpdateTestIndex'
         nsSkinEngine::NSISExitSkinEngine "false"
         ${Else}
             Call UpdateError
@@ -610,7 +636,10 @@ Function UpdateEventChangeCallback
         ${OrIf} $varCurrentStep == '${EVENT_DOWNLOAD_FILES_ERROR}'
          Call NetError
          Call NetErrorStepExt
-         ${ElseIf} $varCurrentStep == '${EVENT_REPLACE_FILES_ERROR}'
+         ${ElseIf} $varCurrentStep == '${EVENT_UNZIP_FILES_ERROR}'
+         Call UnzipError
+         Call UnzipStepExt
+        ${ElseIf} $varCurrentStep == '${EVENT_REPLACE_FILES_ERROR}'
          Call ReplaceError
          Call ReplaceStepExt
         ${Else}
@@ -656,6 +685,15 @@ Function NetError
     ${EndIf}
 FunctionEnd
 
+Function UnzipError
+    ${If} $IsAuto == 0 
+        nsSkinEngine::NSISSetTabLayoutCurrentIndex "WizardTab" "${STEP_UNZIP_FILES_ERROR}"
+        nsSkinEngine::NSISSetTabLayoutCurrentIndex "BottomWizardTab" "${STEP_UNZIP_FILES_ERROR}"
+    ${Else}
+        nsSkinEngine::NSISExitSkinEngine "false"
+    ${EndIf}
+FunctionEnd
+
 Function ReplaceError
 	${If} $IsAuto == 0 
         nsSkinEngine::NSISSetTabLayoutCurrentIndex "WizardTab" "${STEP_REPLACE_FILES_ERROR}"
@@ -663,6 +701,12 @@ Function ReplaceError
     ${Else}
         nsSkinEngine::NSISExitSkinEngine "false"
     ${EndIf}
+FunctionEnd
+
+Function DoRetryUnzipFunc
+    nsSkinEngine::NSISSetTabLayoutCurrentIndex "WizardTab" "${STEP_REPLACE_FILES}"
+    nsSkinEngine::NSISSetTabLayoutCurrentIndex "BottomWizardTab" "${STEP_REPLACE_FILES}"
+    Call DoUnzipFunc
 FunctionEnd
 
 Function DoRetryReplaceFunc
@@ -692,6 +736,21 @@ Function DoUpdateFunc
     nsSkinEngine::NSISSetTabLayoutCurrentIndex "BottomWizardTab" "${STEP_DOWNLOAD_FILES}"
     nsSkinEngine::NSISSetControlData "newVersionTextStep3"  "$(UPGRADABLE_VERSION_MESSAGE)：$varCurrentVersion"  "text"
     nsAutoUpdate::DownloadUpdateFileListIni
+FunctionEnd
+
+Function UnzipFiles
+    nsAutoUpdate::UnzipNeedUpdateFiles
+FunctionEnd
+
+Function AsyncUnzipFiles
+    nsSkinEngine::NSISKillTimer $varUnzipTimerId
+    GetFunctionAddress $0 UnzipFiles
+    BgWorker::CallAndWait
+FunctionEnd
+
+Function DoUnzipFunc
+    GetFunctionAddress $varUnzipTimerId AsyncUnzipFiles
+    nsSkinEngine::NSISCreatTimer $varUnzipTimerId 1
 FunctionEnd
 
 Function DoReplaceFunc

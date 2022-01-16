@@ -9,7 +9,6 @@
 !include "nsInstallDependSettings.nsh"
 !include "nsCustomVariables.nsh"
 !include "nsAutoUpdate.nsh"
-!include "nsInstallFiles.nsh"
 
 ;多语言 
 !insertmacro MUI_LANGUAGE "English"
@@ -91,6 +90,10 @@ Function RegistKeysExt
 FunctionEnd
 ;安装释放文件前
 Function BeforeInstallFiles
+    ${If} $oldInstallPath != ""
+        SetOutPath "$oldInstallPath"
+        File "..\..\..\Temp\Temp\uninst.exe"
+    ${EndIf}
 FunctionEnd
 ;安装释放文件后
 Function LaterInstallFiles

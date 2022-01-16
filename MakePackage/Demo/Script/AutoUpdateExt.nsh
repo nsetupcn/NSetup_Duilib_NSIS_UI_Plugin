@@ -77,6 +77,10 @@ FunctionEnd
 Function UpdateErrorStepExt
 	nsSkinEngine::NSISSetControlData "WizardTab"  "$varResourceDirBG_error_upgrade.png"  "bkimage"
 FunctionEnd
+;解压文件失败
+Function UnzipStepExt
+    nsSkinEngine::NSISSetControlData "WizardTab"  "$varResourceDirBG_error_upgrade.png"  "bkimage"
+FunctionEnd
 ;检查替换文件失败
 Function ReplaceStepExt
 	nsSkinEngine::NSISSetControlData "WizardTab"  "$varResourceDirBG_error_upgrade.png"  "bkimage"
