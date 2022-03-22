@@ -2,8 +2,8 @@
 <Part>
     <VerticalLayout name="4step">
         <Control height="180"/>
-        <Label text="Program update has been downloaded" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="3"/>
-        <Label text="The program is running, is it closed immediately, and the replacement is upgraded" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="2"/>
+        <Label text="Program update has been downloaded" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="2"/>
+        <Label text="The program is running, is it closed immediately, and the replacement is upgraded" align="center" textcolor="#FFFFFFFF" padding="0,0,0,0" font="0"/>
         <Control />
     </VerticalLayout>
 </Part>

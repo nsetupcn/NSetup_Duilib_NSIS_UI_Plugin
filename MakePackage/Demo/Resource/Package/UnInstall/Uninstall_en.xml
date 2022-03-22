@@ -19,8 +19,8 @@
                 <Control />
                 <HorizontalLayout height="40">
                     <Control />
-                    <Button name="unInstallCancelBtn" text="Give another chance" textcolor="#FFFFFFFF" disabledtextcolor="#FFA7A6AA" width="160" normalimage="uninstall_cancel_normal.png" hotimage="uninstall_cancel_hover.png" pushedimage="uninstall_cancel_pressed.png" font="3" /> 
-                    <Button name="unInstallBtn" text="Cruel Uninstall" textcolor="#FF656565" disabledtextcolor="#FFA7A6AA" width="160" normalimage="uninstall_continue_normal.png" hotimage="uninstall_continue_hover.png" pushedimage="uninstall_continue_pressed.png" disabledimage="fast_Install_disable.png" padding="15,0,0,0" font="3" /> 
+                    <Button name="unInstallCancelBtn" text="Cancel" textcolor="#FFFFFFFF" disabledtextcolor="#FFA7A6AA" width="160" normalimage="uninstall_cancel_normal.png" hotimage="uninstall_cancel_hover.png" pushedimage="uninstall_cancel_pressed.png" font="3" /> 
+                    <Button name="unInstallBtn" text="Uninstall" textcolor="#FF656565" disabledtextcolor="#FFA7A6AA" width="160" normalimage="uninstall_continue_normal.png" hotimage="uninstall_continue_hover.png" pushedimage="uninstall_continue_pressed.png" disabledimage="fast_Install_disable.png" padding="15,0,0,0" font="3" /> 
                     <Control />
                 </HorizontalLayout>
                 <Control />

@@ -153,12 +153,12 @@ Function .onInit
 	StrCpy $INSTDIR $forceInstallPath
   ${ElseIf} $INSTDIR == ""
     ${If} ${PRODUCT_INSTALL_DIR} == 0
-        StrCpy $oldInstallPath "${DEFAULT_DIR}"
+        StrCpy $INSTDIR "${DEFAULT_DIR}"
     ${ElseIf} ${PRODUCT_INSTALL_DIR} == 1
-        StrCpy $oldInstallPath "$PROGRAMFILES\${PRODUCT_NAME_EN}"
+        StrCpy $INSTDIR "$PROGRAMFILES\${PRODUCT_NAME_EN}"
     ${ElseIf} ${PRODUCT_INSTALL_DIR} == 2
         ${GetDrives} "HDD" "FindHDD"
-        StrCpy $oldInstallPath "$R2${PRODUCT_NAME_EN}"
+        StrCpy $INSTDIR "$R2${PRODUCT_NAME_EN}"
     ${ElseIf} ${PRODUCT_INSTALL_DIR} == 3
         ReadEnvStr $R0 SYSTEMDRIVE
         StrCpy $INSTDIR "$R0\${PRODUCT_NAME_EN}"
@@ -379,11 +379,15 @@ Function FastInstallPageFunc
 FunctionEnd
 
 Function OnInstallCancelFunc
-   nsSkinEngine::NSISMessageBox ${MB_OKCANCEL} "" "$(APP_EXIT_MESSAGE)"
-   Pop $0
-    ${If} $0 == "1"
-     nsSkinEngine::NSISExitSkinEngine "false"
-   ${EndIf} 
+   ${If} $installStep == "4"
+       nsSkinEngine::NSISExitSkinEngine "false"
+   ${Else}
+       nsSkinEngine::NSISMessageBox ${MB_OKCANCEL} "" "$(APP_EXIT_MESSAGE)"
+       Pop $0
+        ${If} $0 == "1"
+         nsSkinEngine::NSISExitSkinEngine "false"
+       ${EndIf} 
+   ${EndIf}
 FunctionEnd
 
 Function UpdateFreeSpace
@@ -468,8 +472,10 @@ Function acceptCheckChangedFunc
     Pop $0
     ${If} $0 == "${CHECKED}"
 		nsSkinEngine::NSISSetControlData "fastInstallBtn"  "true"  "enable"
+        nsSkinEngine::NSISSetControlData "customInstallBtn"  "true"  "enable"
 	${Else}
 		nsSkinEngine::NSISSetControlData "fastInstallBtn"  "false"  "enable"
+        nsSkinEngine::NSISSetControlData "customInstallBtn"  "false"  "enable"
     ${EndIf}
 FunctionEnd
 
@@ -531,6 +537,7 @@ Function OnCompleteDoFunc
     ${If} $autoInstall == "1"
         Call OnCompleteBtnFunc
     ${EndIf}
+    StrCpy $installStep "4"
 FunctionEnd
 
 Section "-LogSetOn"
@@ -557,11 +564,11 @@ Section InstallFiles
   Call LaterInstallFiles
 SectionEnd
 
+!include "nsInstallFiles.nsh"
+
 Section SectionExt
   Call SectionFuncExt
 SectionEnd
-
-!include "nsInstallFiles.nsh"
 
 Section RegistKeys
 	DeleteRegValue HKCU "${PRODUCT_REG_KEY}" "UpdateOldVersion"
@@ -642,6 +649,7 @@ Function OnCompleteDo
         WriteIniStr "$INSTDIR\version.ini" "LocalVersion" "MachineCode" "$1"
 		FlushINI "$INSTDIR\version.ini"
     ${EndIf}
+    RMDir /r /rebootok $PLUGINSDIR
 FunctionEnd
 	
 Function OnCompleteBtnFunc
