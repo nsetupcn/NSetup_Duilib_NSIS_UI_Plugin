@@ -37,6 +37,7 @@ Var varShowInstTimerId
 Var needReboot
 Var varCurrentStep
 Var needDownload
+Var installStep
 ;onInit扩展操作
 Function OnInitExt
 FunctionEnd

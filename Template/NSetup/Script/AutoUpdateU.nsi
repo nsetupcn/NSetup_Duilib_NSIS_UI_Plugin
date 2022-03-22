@@ -760,6 +760,7 @@ Function DoReplaceFunc
 FunctionEnd
 
 Function DoNoNeedUpdate
+    RMDir /r /rebootok $PLUGINSDIR
     nsSkinEngine::NSISExitSkinEngine "false"
 FunctionEnd
 
@@ -772,6 +773,7 @@ Function DoNetErrorFunc
 FunctionEnd
 
 Function DoRunLatterFunc
+    RMDir /r /rebootok $PLUGINSDIR
     nsSkinEngine::NSISExitSkinEngine "false"
 FunctionEnd
 
@@ -782,6 +784,7 @@ Function DoSuccessedFunc
     ${If} $EXEFILE == ${UPDATE_TEMP_NAME}
         SelfDel::del
     ${EndIf}
+    RMDir /r /rebootok $PLUGINSDIR
     nsSkinEngine::NSISExitSkinEngine "false"
 FunctionEnd
 
