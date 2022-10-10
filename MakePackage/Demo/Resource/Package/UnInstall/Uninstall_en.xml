@@ -18,6 +18,7 @@
             <VerticalLayout>
                 <Control />
                 <HorizontalLayout height="40">
+                    <Label name="retainTip" text="We are still looking forward to the day when the torch lights up the long night" textcolor="#FF000000" Font="1" width="570" align="center"/>
                     <Control />
                     <Button name="unInstallCancelBtn" text="Cancel" textcolor="#FFFFFFFF" disabledtextcolor="#FFA7A6AA" width="160" normalimage="uninstall_cancel_normal.png" hotimage="uninstall_cancel_hover.png" pushedimage="uninstall_cancel_pressed.png" font="3" /> 
                     <Button name="unInstallBtn" text="Uninstall" textcolor="#FF656565" disabledtextcolor="#FFA7A6AA" width="160" normalimage="uninstall_continue_normal.png" hotimage="uninstall_continue_hover.png" pushedimage="uninstall_continue_pressed.png" disabledimage="fast_Install_disable.png" padding="15,0,0,0" font="3" /> 

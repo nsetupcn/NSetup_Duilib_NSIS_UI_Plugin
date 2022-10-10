@@ -1,4 +1,4 @@
-﻿ /*
+ /*
     Compile the script to use the Unicode version of NSIS
     The producers：www.nsetup.cn 
 */
@@ -22,15 +22,15 @@ LangString VERSION_COMPARE_MESSAGE ${LANG_SIMPCHINESE} "已安装的版本高于
 LangString APP_RUNNING_MESSAGE ${LANG_SIMPCHINESE} "当前程序正在运行，是否强制结束，继续安装？"
 LangString APP_EXIT_MESSAGE ${LANG_SIMPCHINESE} "您确认退出安装过程？"
 LangString SELECT_FOLD_MESSAGE ${LANG_SIMPCHINESE} "请选择文件夹"
-
+LangString SPACE_NOT_AMPLE_MESSAGE ${LANG_SIMPCHINESE} "当前选择磁盘空间不足，请重新选择安装目录"
+LangString DOWNLOADING_MESSAGE ${LANG_SIMPCHINESE} "正在下载"
 
 LangString MUTEX_MESSAGE ${LANG_ENGLISH} "There is a ${PRODUCT_NAME} installation wizard already running!"
 LangString VERSION_COMPARE_MESSAGE ${LANG_ENGLISH} "The installed version is higher than the current version. Do you want to continue the installation?"
 LangString APP_RUNNING_MESSAGE ${LANG_ENGLISH} "The current program is running, is it forced to end, continue to install?"
 LangString APP_EXIT_MESSAGE ${LANG_ENGLISH} "Are you sure to exit the installation process?"
 LangString SELECT_FOLD_MESSAGE ${LANG_ENGLISH} "Please select a folder"
-
-LangString DOWNLOADING_MESSAGE ${LANG_SIMPCHINESE} "正在下载"
+LangString SPACE_NOT_AMPLE_MESSAGE ${LANG_ENGLISH} "The currently selected disk space is insufficient"
 LangString DOWNLOADING_MESSAGE ${LANG_ENGLISH} "downloading"
 
 Var varShowInstTimerId
@@ -40,6 +40,7 @@ Var needDownload
 Var installStep
 ;onInit扩展操作
 Function OnInitExt
+    Delete "$oldInstallPath\install.log"
 FunctionEnd
 ;初始化界面扩展操作
 Function InstallProgressExt

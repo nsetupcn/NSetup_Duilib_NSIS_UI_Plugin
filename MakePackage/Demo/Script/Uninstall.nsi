@@ -168,11 +168,7 @@ Function OnInstallMinFunc
 FunctionEnd
 
 Function OnUnInstallCancelFunc
-     nsSkinEngine::NSISMessageBox ${MB_OKCANCEL} "" "$(APP_EXIT_MESSAGE)"
-   Pop $0
-    ${If} $0 == "1"
-     nsSkinEngine::NSISExitSkinEngine "false"
-   ${EndIf} 
+    nsSkinEngine::NSISExitSkinEngine "false"
 FunctionEnd
 
 Function OnNextBtnFunc

@@ -16,6 +16,7 @@
         </VerticalLayout>
         <TabLayout name="WizardTab" padding="15,0,15,15">
             <VerticalLayout>
+                <Label name="retainTip" text="我们仍期待着，火炬照亮长夜的那一天……" textcolor="#FF000000" Font="1" width="570" align="center"/>
                 <Control />
                 <HorizontalLayout height="40">
                     <Control />

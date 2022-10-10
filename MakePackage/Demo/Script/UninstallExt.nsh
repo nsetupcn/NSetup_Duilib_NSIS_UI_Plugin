@@ -56,6 +56,9 @@ Function UnInstallCompleteExt
 FunctionEnd
 ;卸载按钮点击扩展操作
 Function OnCompleteBtnFuncExt
+    !ifdef UNINSTALL_OPEN_URL
+      ExecShell "open" ${UNINSTALL_OPEN_URL}
+    !endif
 FunctionEnd
 ;私有方法，非通用
 

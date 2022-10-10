@@ -354,7 +354,7 @@ Function InitUpdate
     Goto +2
     StrCpy $IsRunAs "1"
     ;处理mutex
-    nsUtils::NSISCreateMutex "${PRODUCT_NAME_EN}AutoUpdate$varUpdateTestIndex"
+    nsUtils::NSISCreateMutex "${PRODUCT_NAME_EN}AutoUpdate$varUpdateTestIndex$IsUpdateSelf"
     Pop $R0
     ${If} $R0 == 1
 		${If} $IsRunAs == "0"
@@ -409,14 +409,18 @@ Function OnInstallMinFunc
 FunctionEnd
 
 Function ReplaceFiles
-    nsProcess::FindProcessByName "${MAIN_APP_NAME}"
-    Pop $R1
-    ${If} $R1 == 0
-    nsSkinEngine::NSISSetTabLayoutCurrentIndex "WizardTab" "${STEP_FILES_DOWNLOADED}"
-    nsSkinEngine::NSISSetTabLayoutCurrentIndex "BottomWizardTab" "${STEP_FILES_DOWNLOADED}"
-	Call ReplaceFilesStepExt
+    ${If} ${PRODUCT_VERSION_LEVEL} == 0
+        nsAutoUpdate::ReplaceFiles
     ${Else}
-    nsAutoUpdate::ReplaceFiles
+        nsProcess::FindProcessByName "${MAIN_APP_NAME}"
+        Pop $R1
+        ${If} $R1 == 0
+        nsSkinEngine::NSISSetTabLayoutCurrentIndex "WizardTab" "${STEP_FILES_DOWNLOADED}"
+        nsSkinEngine::NSISSetTabLayoutCurrentIndex "BottomWizardTab" "${STEP_FILES_DOWNLOADED}"
+        Call ReplaceFilesStepExt
+        ${Else}
+        nsAutoUpdate::ReplaceFiles
+        ${Endif}
     ${Endif}
 FunctionEnd
 
@@ -677,16 +681,19 @@ Function NoNeedUpdate
 FunctionEnd
 
 Function NetError
-    ${If} $IsAuto == 0 
+    ${If} $IsBackstage == 0 
         nsSkinEngine::NSISSetTabLayoutCurrentIndex "WizardTab" "${STEP_NET_ERROR}"
         nsSkinEngine::NSISSetTabLayoutCurrentIndex "BottomWizardTab" "${STEP_NET_ERROR}"
+        ${If} $IsAuto == 1
+            nsSkinEngine::NSISShowLowerRight
+        ${EndIf}
     ${Else}
         nsSkinEngine::NSISExitSkinEngine "false"
     ${EndIf}
 FunctionEnd
 
 Function UnzipError
-    ${If} $IsAuto == 0 
+    ${If} $IsBackstage == 0 
         nsSkinEngine::NSISSetTabLayoutCurrentIndex "WizardTab" "${STEP_UNZIP_FILES_ERROR}"
         nsSkinEngine::NSISSetTabLayoutCurrentIndex "BottomWizardTab" "${STEP_UNZIP_FILES_ERROR}"
     ${Else}
@@ -695,7 +702,7 @@ Function UnzipError
 FunctionEnd
 
 Function ReplaceError
-	${If} $IsAuto == 0 
+	${If} $IsBackstage == 0 
         nsSkinEngine::NSISSetTabLayoutCurrentIndex "WizardTab" "${STEP_REPLACE_FILES_ERROR}"
         nsSkinEngine::NSISSetTabLayoutCurrentIndex "BottomWizardTab" "${STEP_REPLACE_FILES_ERROR}"
     ${Else}

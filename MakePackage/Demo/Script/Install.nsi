@@ -15,6 +15,7 @@ Var isSelfDel
 Var varAsynTimerId
 Var forceInstallPath
 Var rootDir
+Var IsAmple
 
 !define MUI_ICON "..\Resource\Package\app.ico"
 ; 引入的头文件
@@ -373,9 +374,13 @@ Function CustomInstallFunc
 FunctionEnd
 
 Function FastInstallPageFunc
-    Call killProgress
-    Call InstallNextTab
-    Call StartInstallFunc
+    ${If} $IsAmple == "NO"
+        nsSkinEngine::NSISMessageBox ${MB_OK} "" "$(SPACE_NOT_AMPLE_MESSAGE)"
+    ${Else}
+        Call killProgress
+        Call InstallNextTab
+        Call StartInstallFunc
+    ${EndIf}
 FunctionEnd
 
 Function OnInstallCancelFunc
@@ -418,6 +423,29 @@ Function UpdateFreeSpace
    Push "$0$1"
 FunctionEnd
 
+Function CheckFreeSpace
+  Pop $R0
+  ${GetRoot} $R0 $0
+  StrCpy $1 "NO"
+
+  System::Call kernel32::GetDiskFreeSpaceEx(tr0,*l,*l,*l.r0)
+   ${If} $0 > 1024
+   ${OrIf} $0 < 0
+      System::Int64Op $0 / 1024
+      Pop $0
+      ${If} $0 > 1024
+      ${OrIf} $0 < 0
+	    System::Int64Op $0 / 1024
+		Pop $0
+		${If} $0 >= ${MIN_SPACE_REQUIRED}
+	      StrCpy $1 "YES"
+		${EndIf}
+	  ${EndIf}
+   ${EndIf}
+
+   Push $1
+FunctionEnd
+
 Function FreshInstallDataStatusFunc
    ;路径是否合法（合法则不为0Bytes）
    nsSkinEngine::NSISGetControlData InstallTab_InstallFilePath "text"
@@ -433,10 +461,17 @@ Function FreshInstallDataStatusFunc
     nsSkinEngine::NSISSetControlData "InstallTab_FreeSpace"  "$R0"  "text"
    ${EndIf}
    
-   ${If} $R0 == "0Bytes"
-    nsSkinEngine::NSISSetControlData "InstallTab_InstallBtn" "false" "enable"
+   nsSkinEngine::NSISGetControlData InstallTab_InstallFilePath "text"
+   Call CheckFreeSpace
+   Pop $IsAmple
+   ${If} $IsAmple == "NO"
+     nsSkinEngine::NSISSetControlData "fastInstallBtn" "#FFbbbbbb" "textcolor"
+     nsSkinEngine::NSISSetControlData "Select_Install_Btn" "#FFbbbbbb" "textcolor"
+	 nsSkinEngine::NSISSetControlData "InstallTab_FreeSpace" "#FFEE0000" "textcolor"
    ${Else}
-    nsSkinEngine::NSISSetControlData "InstallTab_InstallBtn" "true" "enable"
+     nsSkinEngine::NSISSetControlData "fastInstallBtn" "#FFFFFFFF" "textcolor"
+     nsSkinEngine::NSISSetControlData "Select_Install_Btn" "#FFFFFFFF" "textcolor"
+	 nsSkinEngine::NSISSetControlData "InstallTab_FreeSpace" "#FF999999" "textcolor"
    ${EndIf}
 FunctionEnd
 
@@ -484,11 +519,16 @@ Function acceptPageFunc
 FunctionEnd
 
 Function InstallPageFunc
-    Call killProgress
-    Call StartInstallFunc
+     ${If} $IsAmple == "NO"
+        nsSkinEngine::NSISMessageBox ${MB_OK} "" "$(SPACE_NOT_AMPLE_MESSAGE)"
+    ${Else}
+        Call killProgress
+        Call StartInstallFunc
+    ${EndIf}
 FunctionEnd
 
 Function StartInstallFunc
+    nsSkinEngine::NSISSetControlData "InstallTab_sysCloseBtn"  "false"  "visible"
 	;设置进度条
     nsSkinEngine::NSISFindControl "InstallProgressBar"
       Pop $0
@@ -626,7 +666,7 @@ Function OnCompleteDo
     ${EndIf}
     ${EndIf}
     Call RefreshShellIcons
-    nsSkinEngine::NSISSetControlData "InstallTab_sysCloseBtn"  "true"  "enable"
+    nsSkinEngine::NSISSetControlData "InstallTab_sysCloseBtn"  "true"  "visible"
     nsSkinEngine::NSISGetControlData "autoRunCheckBox" "Checked" ;
     Pop $0
     ${If} $0 == "${CHECKED}"
