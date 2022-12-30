@@ -581,7 +581,7 @@ Function OnCompleteDoFunc
 FunctionEnd
 
 Section "-LogSetOn"
-  LogSet on
+  ;LogSet on
 SectionEnd
 
 Section InstallFiles

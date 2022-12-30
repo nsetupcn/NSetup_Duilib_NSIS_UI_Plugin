@@ -31,8 +31,8 @@ SetDateSave on
 AllowRootDirInstall false
 Name "${PRODUCT_NAME}"
 
-LicenseName "${PRODUCT_NAME_EN}"
-LicenseKey "${PRODUCT_KEY}"
+;LicenseName "${PRODUCT_NAME_EN}"
+;LicenseKey "${PRODUCT_KEY}"
 
 InstallDir "$APPDATA\${PRODUCT_NAME_EN}"
 InstallDirRegKey HKLM "${PRODUCT_UNINST_KEY}" "UninstallString"
