@@ -580,10 +580,6 @@ Function OnCompleteDoFunc
     StrCpy $installStep "4"
 FunctionEnd
 
-Section "-LogSetOn"
-  LogSet on
-SectionEnd
-
 Section InstallFiles
    Call BeforeInstallFiles
    ${If} $oldInstallPath != ""
