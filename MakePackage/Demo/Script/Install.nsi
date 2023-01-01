@@ -23,6 +23,7 @@ Var IsAmple
 !include "FileFunc.nsh"
 !include "StdUtils.nsh"
 !include "LogicLib.nsh"
+!include "WordFunc.nsh"
 !include "nsSkinEngine.nsh"
 !include "nsUtils.nsh"
 !include "nsProcess.nsh"
@@ -43,7 +44,7 @@ VIAddVersionKey /LANG=2052 "ProductVersion" ${PRODUCT_VERSION}
 
 
 
-OutFile "..\..\..\Temp\Output\${PRODUCT_NAME_EN}Setup_${CHANNEL_VALUE}.${PRODUCT_VERSION}.exe"
+OutFile "..\..\..\Temp\Output\${PRODUCT_NAME_EN}Setup-${CHANNEL_VALUE}-${PRODUCT_VERSION}.exe"
 ; 安装和卸载页面
 Page         custom     InstallProgress
 Page         instfiles  "" InstallShow
@@ -623,6 +624,8 @@ Section RegistKeys
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
+	${WordFind2X} "$EXEFILE" "-" "-" "-1" $R0
+	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Channel" "$R0"
     ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
     IntFmt $0 "0x%08X" $0
     WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" "$0"
