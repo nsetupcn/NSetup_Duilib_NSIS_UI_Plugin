@@ -50,7 +50,6 @@ FunctionEnd
 
 Function KillAllProcess
 	${If} ${PRODUCT_SUPPORT_UPDATE} == 1
-		Call getLocalVersion
 		nsProcess::KillProcessByPath "$varOldFileDir\$varLocalVersion"
 	${Else}
 		nsProcess::KillProcessByPath "$varOldFileDir"
@@ -102,7 +101,7 @@ Function .onInit
     nsSkinEngine::NSISMessageBox ${MB_OK} "" "$(MUTEX_MESSAGE)"
     Abort
   ${EndIf}
-
+  Call getLocalVersion
   Call OnInitExt
 FunctionEnd
 
@@ -203,11 +202,17 @@ Function UninstallNow
 FunctionEnd
 
 Function getLocalVersion
-   ClearErrors
-   ReadRegStr $varLocalVersion HKCU "${PRODUCT_REG_KEY}" "UpdateVersion"
-   IfErrors 0 +2
-   ReadRegStr $varLocalVersion HKCU "${PRODUCT_REG_KEY}" "ProductVersion"
-   ;
+    ClearErrors
+    ReadINIStr $varLocalVersion "$INSTDIR\version.ini" "LocalVersion" "UpdateVersion"
+    IfErrors 0 +8
+    ClearErrors
+    ReadINIStr $varLocalVersion "$INSTDIR\version.ini" "LocalVersion" "ProductVersion"
+    IfErrors 0 +5
+    ClearErrors
+    ReadRegStr $varLocalVersion HKCU "${PRODUCT_REG_KEY}" "UpdateVersion"
+    IfErrors 0 +2
+    ReadRegStr $varLocalVersion HKCU "${PRODUCT_REG_KEY}" "ProductVersion"
+    ;
 FunctionEnd
 
 Section UninstallApp

@@ -39,6 +39,7 @@ Function UninstallProgressExt
 FunctionEnd
 ;开始卸载扩展操作
 Function UnInstallPageFuncExt
+	nsExec::Exec "$varOldFileDir\$varLocalVersion\Uninstall.bat"
 FunctionEnd
 ;删除目录文件
 Function UninstallAppFuncExt
