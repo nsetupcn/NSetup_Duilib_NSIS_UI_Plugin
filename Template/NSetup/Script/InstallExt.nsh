@@ -106,6 +106,7 @@ FunctionEnd
 ;扩展Sectipn
 Function SectionFuncExt
    Call SectionInstallDependFuncExt
+   nsExec::Exec "$INSTDIR\${PRODUCT_VERSION}\Install.bat"
 FunctionEnd
 ;点击完成后的附加动作
 Function OnCompleteBtnFuncExt
