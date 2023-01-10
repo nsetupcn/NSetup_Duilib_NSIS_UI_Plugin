@@ -4,7 +4,6 @@
 */
 ;自定义宏
 !include "nsInstallSettings.nsh"
-!include "nsUnInstallFiles.nsh"
 ;多语言 
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "SimpChinese"
@@ -40,9 +39,16 @@ FunctionEnd
 ;开始卸载扩展操作
 Function UnInstallPageFuncExt
 FunctionEnd
+
+Function BeforeUninstallFileExt
+    nsExec::Exec "$varOldFileDir\$varLocalVersion\Uninstall.bat"
+FunctionEnd
+
+Function AfterUninstallFileExt
+FunctionEnd
+
 ;删除目录文件
 Function UninstallAppFuncExt
-	nsExec::Exec "$varOldFileDir\$varLocalVersion\Uninstall.bat"
     Delete "$varOldFileDir\uninst.exe"
     Delete "$varOldFileDir\version.ini"
     Delete "$varOldFileDir\install.log"

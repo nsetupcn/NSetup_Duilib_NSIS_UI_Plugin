@@ -215,6 +215,16 @@ Function getLocalVersion
     ;
 FunctionEnd
 
+Section BeforeUninstallFile
+	Call BeforeUninstallFileExt
+SectionEnd
+
+!include "nsUnInstallFiles.nsh"
+
+Section AfterUninstallFile
+	Call AfterUninstallFileExt
+SectionEnd
+
 Section UninstallApp
     ${If} $isSilence == "1"
         Call KillAllProcess
