@@ -43,7 +43,7 @@
                     <HorizontalLayout height="13" padding="0,10,0,0">
                         <CheckBox name="deskShortCheckBox" text="添加桌面快捷方式" textcolor="#FF333333" width="250" selected="true"/>
                         <CheckBox name="autoRunCheckBox" text="开机自启动" textcolor="#FF333333" width="250" padding="5,0,0,0" selected="true"/>
-						<Label name="minRequiredLb" font="0" textcolor="#FF999999" width="90" padding="20,0,0,0"/>
+                        <Label name="minRequiredLb" font="0" textcolor="#FF999999" width="90" padding="20,0,0,0"/>
                         <Label font="0" width="70" text="剩余空间:" textcolor="#FF999999" padding="20,0,0,0"/>
                         <Label font="0" name="InstallTab_FreeSpace" width="150" textcolor="#FF999999" />
                     </HorizontalLayout>

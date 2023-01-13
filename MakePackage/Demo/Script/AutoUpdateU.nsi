@@ -409,14 +409,18 @@ Function OnInstallMinFunc
 FunctionEnd
 
 Function ReplaceFiles
-    nsProcess::FindProcessByName "${MAIN_APP_NAME}"
-    Pop $R1
-    ${If} $R1 == 0
-    nsSkinEngine::NSISSetTabLayoutCurrentIndex "WizardTab" "${STEP_FILES_DOWNLOADED}"
-    nsSkinEngine::NSISSetTabLayoutCurrentIndex "BottomWizardTab" "${STEP_FILES_DOWNLOADED}"
-	Call ReplaceFilesStepExt
+    ${If} ${PRODUCT_VERSION_LEVEL} == 0
+        nsAutoUpdate::ReplaceFiles
     ${Else}
-    nsAutoUpdate::ReplaceFiles
+        nsProcess::FindProcessByName "${MAIN_APP_NAME}"
+        Pop $R1
+        ${If} $R1 == 0
+        nsSkinEngine::NSISSetTabLayoutCurrentIndex "WizardTab" "${STEP_FILES_DOWNLOADED}"
+        nsSkinEngine::NSISSetTabLayoutCurrentIndex "BottomWizardTab" "${STEP_FILES_DOWNLOADED}"
+        Call ReplaceFilesStepExt
+        ${Else}
+        nsAutoUpdate::ReplaceFiles
+        ${Endif}
     ${Endif}
 FunctionEnd
 

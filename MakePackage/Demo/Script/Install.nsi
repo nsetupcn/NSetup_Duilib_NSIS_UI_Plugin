@@ -474,6 +474,7 @@ Function FreshInstallDataStatusFunc
      nsSkinEngine::NSISSetControlData "Select_Install_Btn" "#FFFFFFFF" "textcolor"
 	 nsSkinEngine::NSISSetControlData "InstallTab_FreeSpace" "#FF999999" "textcolor"
    ${EndIf}
+   nsSkinEngine::NSISSetControlData "minRequiredLb"  "$(REQUIRED_MESSAGE)${MIN_SPACE_REQUIRED}MB"  "text"
 FunctionEnd
 
 Function OnTextChangeFunc
@@ -624,8 +625,8 @@ Section RegistKeys
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
-	${WordFind2X} "$EXEFILE" "-" "-" "-1" $R0
-	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Channel" "$R0"
+    ${WordFind2X} "$EXEFILE" "-" "-" "-1" $R0
+    WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Channel" "$R0"
     ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
     IntFmt $0 "0x%08X" $0
     WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" "$0"
