@@ -24,6 +24,7 @@ LangString APP_EXIT_MESSAGE ${LANG_SIMPCHINESE} "您确认退出安装过程？"
 LangString SELECT_FOLD_MESSAGE ${LANG_SIMPCHINESE} "请选择文件夹"
 LangString SPACE_NOT_AMPLE_MESSAGE ${LANG_SIMPCHINESE} "当前选择磁盘空间不足，请重新选择安装目录"
 LangString DOWNLOADING_MESSAGE ${LANG_SIMPCHINESE} "正在下载"
+LangString REQUIRED_MESSAGE ${LANG_SIMPCHINESE} "所需空间:"
 
 LangString MUTEX_MESSAGE ${LANG_ENGLISH} "There is a ${PRODUCT_NAME} installation wizard already running!"
 LangString VERSION_COMPARE_MESSAGE ${LANG_ENGLISH} "The installed version is higher than the current version. Do you want to continue the installation?"
@@ -32,6 +33,7 @@ LangString APP_EXIT_MESSAGE ${LANG_ENGLISH} "Are you sure to exit the installati
 LangString SELECT_FOLD_MESSAGE ${LANG_ENGLISH} "Please select a folder"
 LangString SPACE_NOT_AMPLE_MESSAGE ${LANG_ENGLISH} "The currently selected disk space is insufficient"
 LangString DOWNLOADING_MESSAGE ${LANG_ENGLISH} "downloading"
+LangString REQUIRED_MESSAGE ${LANG_ENGLISH} "Required:"
 
 Var varShowInstTimerId
 Var needReboot

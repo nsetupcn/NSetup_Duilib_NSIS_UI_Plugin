@@ -474,6 +474,7 @@ Function FreshInstallDataStatusFunc
      nsSkinEngine::NSISSetControlData "Select_Install_Btn" "#FFFFFFFF" "textcolor"
 	 nsSkinEngine::NSISSetControlData "InstallTab_FreeSpace" "#FF999999" "textcolor"
    ${EndIf}
+   nsSkinEngine::NSISSetControlData "minRequiredLb"  "$(REQUIRED_MESSAGE)${MIN_SPACE_REQUIRED}MB"  "text"
 FunctionEnd
 
 Function OnTextChangeFunc
