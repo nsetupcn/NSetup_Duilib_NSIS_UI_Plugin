@@ -187,6 +187,11 @@ Function .onInit
 	 StrCpy $rootDir "$INSTDIR"
   ${EndIf}
   
+  StrLen $0 ${PRODUCT_LICENSE_WEB_SITE}
+  ${If} $0 == 1
+	nsSkinEngine::NSISSetControlData "acceptBtn" "false" "visible"
+  ${EndIf}
+  
   Call OnInitExt
   ${If} $isSilence == "1"
 	 Call killProgress
