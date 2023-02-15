@@ -28,6 +28,8 @@ Var IsAmple
 !include "nsUtils.nsh"
 !include "nsProcess.nsh"
 !include "InstallExt.nsh"
+
+!define /date PRODUCT_DATE %Y%m%d
 RequestExecutionLevel admin
 ;文件版本声明-开始
 VIProductVersion ${PRODUCT_INSTALL_FILE_VERSION}
@@ -44,7 +46,7 @@ VIAddVersionKey /LANG=2052 "ProductVersion" ${PRODUCT_VERSION}
 
 
 
-OutFile "..\..\..\Temp\Output\${PRODUCT_NAME_EN}Setup-${CHANNEL_VALUE}-${PRODUCT_VERSION}.exe"
+OutFile "..\..\..\Temp\Output\${PRODUCT_NAME_EN}Setup-${CHANNEL_VALUE}-${PRODUCT_VERSION}-${PRODUCT_DATE}.exe"
 ; 安装和卸载页面
 Page         custom     InstallProgress
 Page         instfiles  "" InstallShow
@@ -630,6 +632,13 @@ Section RegistKeys
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
+	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "InstallDate" ${PRODUCT_DATE}
+	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "InstallLocation" "$INSTDIR"
+	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Version" "${PRODUCT_VERSION}"
+	${WordFind} "${PRODUCT_VERSION}" "." +3 $R0
+	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "VersionMajor" "$R0"
+	${WordFind} "${PRODUCT_VERSION}" "." +4 $R0
+	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "VersionMinor" "$R0"
     ${WordFind2X} "$EXEFILE" "-" "-" "-1" $R0
     WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Channel" "$R0"
     ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
