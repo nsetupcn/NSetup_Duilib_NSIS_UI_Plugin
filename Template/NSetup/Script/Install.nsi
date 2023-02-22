@@ -641,9 +641,9 @@ Section RegistKeys
 	WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "VersionMinor" "$R0"
     ${WordFind2X} "$EXEFILE" "-" "-" "-1" $R0
     WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Channel" "$R0"
-    ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
-    IntFmt $0 "0x%08X" $0
-    WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" "$0"
+    ${GetSize} "$INSTDIR" "/S=0K" $1 $2 $3
+    IntFmt $1 "0x%08X" $1
+    WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" "$1"
     
     WriteIniStr "$INSTDIR\version.ini" "LocalVersion" "${CHANNEL_KEY}" "${CHANNEL_VALUE}"
 	FlushINI "$INSTDIR\version.ini"
