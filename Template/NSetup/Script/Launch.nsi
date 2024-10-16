@@ -11,6 +11,7 @@
 
 Var varLocalVersion
 Var varOldLocalVersion
+Var varUpdateType
 ;Request application privileges for Windows Vista
 RequestExecutionLevel admin
 ;文件版本声明-开始
@@ -37,6 +38,14 @@ Function getLocalVersion
     IfErrors 0 +2
     ReadINIStr $varLocalVersion "$EXEDIR\version.ini" "LocalVersion" "ProductVersion"
     ;
+    
+    ClearErrors
+    ReadINIStr $varUpdateType "$EXEDIR\version.ini" "LocalVersion" "UpdateType"
+    IfErrors 0 +4
+    StrCpy $varUpdateType 0
+    WriteIniStr "$EXEDIR\version.ini" "LocalVersion" "UpdateType" 0
+    FlushINI "$EXEDIR\version.ini"
+    ;
 FunctionEnd
 
 Section InstallAppDataFiles
@@ -60,7 +69,10 @@ Section InstallAppDataFiles
     Call getLocalVersion
     SetOutPath "$EXEDIR\$varLocalVersion"
     Exec '"$EXEDIR\$varLocalVersion\${MAIN_APP_NAME}" $R0'
-    Exec '"$EXEDIR\AutoUpdate.exe" /Auto'
+    ${If} $varUpdateType == 0
+        Exec '"$EXEDIR\AutoUpdate.exe" /Auto'
+    ${Endif}
+    
     IfFileExists $EXEDIR\AutoUpdateSelf.exe 0 +2
     Delete $EXEDIR\AutoUpdateSelf.exe
     ;
